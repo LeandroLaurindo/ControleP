@@ -26,18 +26,23 @@ public class ControlerCliente implements Serializable {
     private Clientes clientes;
 
     private List<Clientes> listaDeClientes;
+    
+     private List<Clientes> listaDeClientesfiltro;
 
     private ClienteJpaDAO jpaController = new ClienteJpaDAO();
 
     @PostConstruct
     public void init() {
         clientes = new Clientes();
+        listaDeClientesfiltro = new ArrayList<>();
         listar();
     }
 
     public void listar() {
         listaDeClientes = new ArrayList<>();
         listaDeClientes = jpaController.findClientesEntities();
+        listaDeClientesfiltro = new ArrayList<>();
+        listaDeClientesfiltro = listaDeClientes;
         Util.updateComponente("formTbClientes");
     }
 
@@ -108,4 +113,12 @@ public class ControlerCliente implements Serializable {
         this.listaDeClientes = listaDeClientes;
     }
 
+    public List<Clientes> getListaDeClientesfiltro() {
+        return listaDeClientesfiltro;
+    }
+
+    public void setListaDeClientesfiltro(List<Clientes> listaDeClientesfiltro) {
+        this.listaDeClientesfiltro = listaDeClientesfiltro;
+    }
+  
 }

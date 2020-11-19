@@ -41,33 +41,32 @@
             <f:view>
 
                 <h:form id="formTbClientes">
-                    <p:dataTable value="#{controlerCliente.listaDeClientes}" var="item" widgetVar="pausaTable5" paginator="true"
+                    <p:dataTable value="#{controlerCliente.listaDeClientes}" var="item" 
+                                 filteredValue="#{controlerCliente.listaDeClientesfiltro}" widgetVar="pausaTable5" paginator="true"
                                  emptyMessage="Nenhum usuário encontrado!" currentPageReportTemplate="(Pag. {currentPage}/{totalPages} - {totalRecords} registros)"
-                                 rows="10" rowsPerPageTemplate="5,10,15,#{controlerCliente.listaDeClientes.size()}"
+                                 rows="10" rowsPerPageTemplate="5,10,15,#{controlerCliente.listaDeClientesfiltro.size()}"
                                  sortBy="#{item.nome}">
                         <f:facet name="header">
                             <p:commandButton value="Novo Cliente" styleClass="botao" actionListener="#{controlerCliente.novoCliente()}" oncomplete="PF('dlgCliente').show()" icon="ui-icon-plus" style="float: right; margin-right: 20px;"/>
+                            <p:outputPanel style="float: right; margin-right: 20px;">
+                                <h:outputText value="Pesquise em todos os campos:" />
+                                <h:inputText id="globalFilter" onkeyup="PF('pausaTable5').filter()" />
+                            </p:outputPanel>
                             <h3>Lista de Clientes</h3>
                         </f:facet>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="Id"/>
-                            </f:facet>
-                            <h:outputText value="#{item.id}"/>
-                        </p:column>
                         <p:column filterBy="#{item.nome}">
                             <f:facet name="header">
                                 <h:outputText value="Nome"/>
                             </f:facet>
                             <h:outputText value="#{item.nome}"/>
                         </p:column>
-                        <p:column>
+                        <p:column  filterBy="#{item.cpfCnpj}" width="100">
                             <f:facet name="header">
                                 <h:outputText value="CpfCnpj"/>
                             </f:facet>
                             <h:outputText value="#{item.cpfCnpj}"/>
                         </p:column>
-                        <p:column>
+                        <p:column width="100">
                             <f:facet name="header">
                                 <h:outputText value="Telefone"/>
                             </f:facet>
@@ -79,7 +78,7 @@
                             </f:facet>
                             <h:outputText value="#{item.login}"/>
                         </p:column>
-                        <p:column>
+                        <p:column width="100">
                             <f:facet name="header">
                                 <h:outputText value="Plataforma"/>
                             </f:facet>
@@ -90,7 +89,7 @@
                                 <h:outputText value="Ação"/>
                             </f:facet> 
                             <p:commandButton value="Editar" styleClass="botao" actionListener="#{controlerCliente.setarClienteEditar(item)}" oncomplete="PF('dlgCliente').show()" process="@this" icon="ui-icon-pencil" />
-                             <p:commandButton value="Excluir" styleClass="botao" actionListener="#{controlerCliente.setarClienteRemover(item)}" oncomplete="PF('dlgConfirmarC').show()" process="@this" icon="ui-icon-pencil" />
+                             <p:commandButton value="Excluir" styleClass="botao" actionListener="#{controlerCliente.setarClienteRemover(item)}" oncomplete="PF('dlgConfirmarC').show()" process="@this" icon="ui-icon-trash" />
                         </p:column>
                     </p:dataTable>
                 </h:form>

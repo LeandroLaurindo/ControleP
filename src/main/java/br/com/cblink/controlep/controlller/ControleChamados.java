@@ -36,7 +36,20 @@ public class ControleChamados implements Serializable {
         listaClientes = new ArrayList<>();
         listaClientes = jpaController.findClientesEntities();
         listaChamadosatendidos = new ArrayList<>();
-        listaChamadosatendidos = jpaController.listarAtendimentos("SELECT c FROM Chamadosatendidos c WHERE c.dataFim is null ORDER BY c.dataInicio DESC");
+         List<Chamadosatendidos> aux = new ArrayList<>();
+        aux = jpaController.listarAtendimentos("SELECT c FROM Chamadosatendidos c WHERE c.dataFim is null ORDER BY c.dataInicio DESC");
+        for (Chamadosatendidos ca : aux) {
+            boolean salva = true;
+            for (Chamadosatendidos cb : listaChamadosatendidos) {
+                if(ca.getClientesId().getNome().equalsIgnoreCase(cb.getClientesId().getNome())){
+                    salva = false;
+                    break;
+                }
+            }
+            if(salva){
+              listaChamadosatendidos.add(ca);
+            }
+        }
         Util.updateComponente("formTbChamados");
     }
 
@@ -57,11 +70,18 @@ public class ControleChamados implements Serializable {
             }
         }
         jpql += " ORDER BY c.dataInicio DESC";
+        //System.err.println(jpql);
         listaChamadosatendidos = new ArrayList<>();
         listaChamadosatendidos = jpaController.listarConfiltros(jpql);
-        if (listaClientes.size() > 0) {
-            cliente = listaChamadosatendidos.get(0).getClientesId();
+        //System.err.println(listaChamadosatendidos.size());
+        if (listaChamadosatendidos.size() > 0) {
+            try {
+                cliente = listaChamadosatendidos.get(0).getClientesId();
+            } catch (Exception e) {
+                
+            }
         }
+        
         Util.updateComponente("formTbChamados");
     }
 
@@ -136,7 +156,7 @@ public class ControleChamados implements Serializable {
         chamados.setTelefone(cliente.getTelefone());
         Util.updateComponente("cadFrmCham");
         Util.chamarFuncaoJs("PF('dlgAtendimento').show()");
-        
+
     }
 
     public void setarDescricao(String descr) {

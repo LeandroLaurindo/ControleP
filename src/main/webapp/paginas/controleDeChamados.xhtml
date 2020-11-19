@@ -48,8 +48,8 @@
             <f:view>
                 <h:form id="formTbChamados">
                     <p:dataTable value="#{controleChamados.listaChamadosatendidos}" var="item" widgetVar="pausaTable2" paginator="true"
-                                 emptyMessage="Nenhum usuário encontrado!" currentPageReportTemplate="(Pag. {currentPage}/{totalPages} - {totalRecords} registros)"
-                                 rows="10" rowsPerPageTemplate="5,10,15,#{controleChamados.listaChamadosatendidos.size()}">
+                                 emptyMessage="Nenhum usuário encontrado!" currentPageReportTemplate="(Pag.{currentPage}/{totalPages} - {totalRecords} registros)"
+                                 rows="10" rowsPerPageTemplate="10,20,40,#{controleChamados.listaChamadosatendidos.size()}">
                         <f:facet name="header">
                             <p:selectOneMenu id="tipox" value="#{controleChamados.idCliente}" label="Pequisar por Cliente" widgetVar="tipoforne1" title="se todos desmarcados consulta todos."
                                              filter="true" filterMatchMode="contains" panelStyle="width:400px" style="float: left;">
@@ -58,21 +58,22 @@
                                 <f:selectItems value="#{controleChamados.listaClientes}" var="fnnox" itemValue="#{fnnox.id}"   itemLabel="#{fnnox.nome}" />
                             </p:selectOneMenu> 
                             <p:commandButton value="Novo Chamado" styleClass="botao"  actionListener="#{controleChamados.novoChamadosatendidos()}" icon="ui-icon-plus" style="float: right; margin-right: 20px;" oncomplete="PF('dlgAtendimento').show()"/>
+
                             <h3>Lista de Chamados</h3>
                         </f:facet>
-                        <p:column filterBy="#{item.clientesId.nome}">
+                        <p:column filterBy="#{item.clientesId.nome}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="Cliente"/>
                             </f:facet>
                             <h:outputText value="#{item.clientesId.nome}"/>
                         </p:column>
-                        <p:column>
+                        <p:column filterBy="#{item.solicitante}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="Solicitante"/>
                             </f:facet>
                             <h:outputText value="#{item.solicitante}"/>
                         </p:column>
-                        <p:column>
+                        <p:column filterBy="#{item.telefone}">
                             <f:facet name="header">
                                 <h:outputText value="Telefone"/>
                             </f:facet>

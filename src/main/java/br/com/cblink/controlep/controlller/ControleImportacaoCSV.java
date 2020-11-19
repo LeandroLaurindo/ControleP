@@ -7,6 +7,8 @@ package br.com.cblink.controlep.controlller;
 
 import br.com.cblink.controlep.entidades.Clientes;
 import br.com.cblink.controlep.entidades.Dids;
+import br.com.cblink.controlep.entidades.Didsfsm;
+import br.com.cblink.controlep.entidades.Telefones;
 import br.com.cblink.controlep.jpa.ImportacaoCsvJpaDAO;
 import br.com.cblink.controlep.util.ArquivoUtilImportacao;
 import br.com.cblink.controlep.util.Util;
@@ -53,17 +55,31 @@ public class ControleImportacaoCSV implements Serializable {
     private List<ColunasPlanilhaClientes> listaColulasPlanilha;
 
     private List<String> listaColunasCliente;
+    private List<String> listaColunasTelefones;
+    private List<String> listaColunasDids;
+    private List<String> listaColunasDidsFsm;
 
     private String caminhoFinal = "";
 
     private List<Clientes> listaParaSalvar;
+
+    private List<Telefones> listaParaSalvarTelefones;
+
+    private List<Dids> listaParaSalvarDids;
+
+    private List<Didsfsm> listaParaSalvarDidsFsm;
 
     @PostConstruct
     public void init() {
         listaColulasBd = new ArrayList<>();
         listaColunasCliente = new ArrayList<>();
         listaColunasCliente = csvJpaDAO.busccarNomesColumas("clientes");
-
+        listaColunasTelefones = new ArrayList<>();
+        listaColunasTelefones = csvJpaDAO.busccarNomesColumas("telefones");
+        listaColunasDids = new ArrayList<>();
+        listaColunasDids = csvJpaDAO.busccarNomesColumas("dids");
+        listaColunasDidsFsm = new ArrayList<>();
+        listaColunasDidsFsm = csvJpaDAO.busccarNomesColumas("didsfsm");
     }
 
     public void prepararDados() {
@@ -96,8 +112,125 @@ public class ControleImportacaoCSV implements Serializable {
         }
     }
 
+    public void prepararDadosDids() {
+
+        try {
+            if (filess != null && filess.getFileName().contains(".csv")) {
+                FacesContext aFacesContext = FacesContext.getCurrentInstance();
+                ServletContext context = (ServletContext) aFacesContext.getExternalContext().getContext();
+                ArquivoUtilImportacao.escrever(filess.getFileName(), filess.getContents());
+                String realPath = context.getRealPath("/");
+                String caminho = realPath + "/uploads/" + filess.getFileName();
+                caminhoFinal = caminho;
+                conteudoCSV = new BufferedReader(new FileReader(caminho));
+                listaColulasPlanilha = new ArrayList<>();
+                while ((linha = conteudoCSV.readLine()) != null) {
+                    String[] dados = linha.split(csvSeparadorCampo);
+                    for (int i = 0; i < dados.length; i++) {
+                        listaColulasPlanilha.add(new ColunasPlanilhaClientes(i, dados[i]));
+                    }
+                    break;
+                }
+
+                Util.chamarFuncaoJs("PF('dlgLigacaoT').show()");
+
+            } else {
+                Util.criarMensagemAviso("O arquivo tem que ser formato CSV!");
+            }
+        } catch (IOException e) {
+
+        }
+    }
+
+    public void prepararDadosDidsFsm() {
+
+        try {
+            if (filess != null && filess.getFileName().contains(".csv")) {
+                FacesContext aFacesContext = FacesContext.getCurrentInstance();
+                ServletContext context = (ServletContext) aFacesContext.getExternalContext().getContext();
+                ArquivoUtilImportacao.escrever(filess.getFileName(), filess.getContents());
+                String realPath = context.getRealPath("/");
+                String caminho = realPath + "/uploads/" + filess.getFileName();
+                caminhoFinal = caminho;
+                conteudoCSV = new BufferedReader(new FileReader(caminho));
+                listaColulasPlanilha = new ArrayList<>();
+                while ((linha = conteudoCSV.readLine()) != null) {
+                    String[] dados = linha.split(csvSeparadorCampo);
+                    for (int i = 0; i < dados.length; i++) {
+                        listaColulasPlanilha.add(new ColunasPlanilhaClientes(i, dados[i]));
+                    }
+                    break;
+                }
+
+                Util.chamarFuncaoJs("PF('dlgLigacaoD').show()");
+
+            } else {
+                Util.criarMensagemAviso("O arquivo tem que ser formato CSV!");
+            }
+        } catch (IOException e) {
+
+        }
+    }
+
     public void metodoDeAssociacao(Integer i) {
-        listaColulasBd.add(new DidsColunas(i, nomeColuna));
+        boolean inserir = true;
+
+        for (DidsColunas didsColunas : listaColulasBd) {
+            if (didsColunas.getColuna().equalsIgnoreCase(nomeColuna)) {
+                inserir = false;
+                break;
+            }
+        }
+        if (inserir) {
+            listaColulasBd.add(new DidsColunas(i, nomeColuna));
+        } else {
+            listaColulasBd = new ArrayList<>();
+            Util.updateComponente("frmLigacao");
+            nomeColuna = "";
+
+            Util.chamarFuncaoJs("PF('dlgLigacao').show()");
+            Util.criarMensagemErro("Por favor refaça a associação novamente!");
+        }
+    }
+
+    public void metodoDeAssociacaoDids(Integer i) {
+        boolean inserir = true;
+
+        for (DidsColunas didsColunas : listaColulasBd) {
+            if (didsColunas.getColuna().equalsIgnoreCase(nomeColuna)) {
+                inserir = false;
+                break;
+            }
+        }
+        if (inserir) {
+            listaColulasBd.add(new DidsColunas(i, nomeColuna));
+        } else {
+            listaColulasBd = new ArrayList<>();
+            Util.updateComponente("frmLigacaof");
+            nomeColuna = "";
+            Util.chamarFuncaoJs("PF('dlgLigacaoT').show()");
+            Util.criarMensagemErro("Por favor refaça a associação novamente!");
+        }
+    }
+
+    public void metodoDeAssociacaoDidsFsm(Integer i) {
+        boolean inserir = true;
+
+        for (DidsColunas didsColunas : listaColulasBd) {
+            if (didsColunas.getColuna().equalsIgnoreCase(nomeColuna)) {
+                inserir = false;
+                break;
+            }
+        }
+        if (inserir) {
+            listaColulasBd.add(new DidsColunas(i, nomeColuna));
+        } else {
+            listaColulasBd = new ArrayList<>();
+            Util.updateComponente("frmLigacaod");
+            nomeColuna = "";
+            Util.chamarFuncaoJs("PF('dlgLigacaoD').show()");
+            Util.criarMensagemErro("Por favor refaça a associação novamente!");
+        }
     }
 
     public void importarCliente() {
@@ -115,7 +248,8 @@ public class ControleImportacaoCSV implements Serializable {
                     for (int i = 0; i < dados.length; i++) {
                         for (DidsColunas dc : listaColulasBd) {
                             if (dc.getIndice() == i) {
-                                if (dc.getColuna().equalsIgnoreCase("mome")) {
+
+                                if (dc.getColuna().equalsIgnoreCase("nome")) {
                                     clientes.setNome(dados[i]);
                                 }
                                 if (dc.getColuna().equalsIgnoreCase("cpf_cnpj")) {
@@ -141,8 +275,127 @@ public class ControleImportacaoCSV implements Serializable {
         } catch (IOException e) {
             Util.criarMensagemErro("Erro ao importar arquivo" + e.getMessage());
         }
-        for (Clientes clientes : listaParaSalvar) {
-            System.err.println(clientes.getNome() + " - " + clientes.getCpfCnpj() + " - " + clientes.getTelefone() + " - " + clientes.getLogin() + " - " + clientes.getPlataforma());
+        if (listaParaSalvar.size() > 0) {
+            csvJpaDAO.createMultiplusClientes(listaParaSalvar);
+            Util.criarMensagemInfo("Arquivos Importados com sucesso!");
+            Util.chamarFuncaoJs("PF('dlgLigacao').hide()");
+        }
+    }
+
+    public void importarDids() {
+        try {
+            conteudoCSV = new BufferedReader(new FileReader(caminhoFinal));
+            listaColulasPlanilha = new ArrayList<>();
+            boolean primeiraLinha = true;
+            listaParaSalvarDids = new ArrayList<>();
+            String telefone = "";
+            while ((linha = conteudoCSV.readLine()) != null) {
+                Dids didsd = new Dids();
+                if (primeiraLinha) {
+                    primeiraLinha = false;
+                } else {
+                    String[] dados = linha.split(csvSeparadorCampo);
+
+                    for (int i = 0; i < dados.length; i++) {
+                        for (DidsColunas dc : listaColulasBd) {
+                            if (dc.getIndice() == i) {
+                                if (dc.getColuna().equalsIgnoreCase("data_portabilidade")) {
+                                    if (dados[i] != null && !dados[i].isEmpty()) {
+                                        didsd.setDataPortabilidade(formataDataPadraoBDComHoras(dados[i].trim()));
+                                    } else {
+                                        didsd.setDataPortabilidade(null);
+                                    }
+
+                                }
+                                if (dc.getColuna().equalsIgnoreCase("nome")) {
+                                    didsd.setNome(dados[i]);
+
+                                }
+
+                                if (dc.getColuna().equalsIgnoreCase("numero")) {
+                                    if (dados[i] != null && !dados[i].isEmpty()) {
+                                        telefone = dados[i].trim();
+                                        didsd.setNumero(telefone);
+
+                                    } else {
+                                        didsd.setNumero(telefone);
+                                    }
+
+                                }
+                                if (dc.getColuna().equalsIgnoreCase("operadora")) {
+                                    didsd.setOperadora(dados[i]);
+
+                                }
+                            }
+                        }
+                    }
+
+                    listaParaSalvarDids.add(didsd);
+                }
+
+            }
+        } catch (Throwable e) {
+            Util.criarMensagemErro("Erro ao importar arquivo" + e.getMessage());
+        }
+
+        if (listaParaSalvarDids.size() > 0) {
+            csvJpaDAO.createMultiplus(listaParaSalvarDids);
+            Util.criarMensagemInfo("DidsFsm Importados com sucesso!");
+            Util.chamarFuncaoJs("PF('dlgLigacaoD').hide()");
+        }
+    }
+
+    public void importarDidsFsm() {
+        try {
+            conteudoCSV = new BufferedReader(new FileReader(caminhoFinal));
+            listaColulasPlanilha = new ArrayList<>();
+            boolean primeiraLinha = true;
+            listaParaSalvarDidsFsm = new ArrayList<>();
+      
+            while ((linha = conteudoCSV.readLine()) != null) {
+                Didsfsm didsd = new Didsfsm();
+                if (primeiraLinha) {
+                    primeiraLinha = false;
+                } else {
+                    String[] dados = linha.split(csvSeparadorCampo);
+
+                    for (int i = 0; i < dados.length; i++) {
+                        for (DidsColunas dc : listaColulasBd) {
+                            if (dc.getIndice() == i) {
+                                if (dc.getColuna().equalsIgnoreCase("numero")) {
+                                    didsd.setNumero(dados[i]);
+                                }
+                            }
+                            if (dc.getColuna().equalsIgnoreCase("operadora")) {
+                                didsd.setOperadora(dados[i]);
+
+                            }
+
+                            if (dc.getColuna().equalsIgnoreCase("status")) {
+                                didsd.setStatus(dados[i]);
+                            }
+
+                            if (dc.getColuna().equalsIgnoreCase("dono")) {
+                                didsd.setDono(dados[i]);
+                            }
+                            if (dc.getColuna().equalsIgnoreCase("ramal")) {
+                                didsd.setRamal(dados[i]);
+                            }
+                        }
+                    }
+
+                    listaParaSalvarDidsFsm.add(didsd);
+                }
+
+            }
+        } catch (Throwable e) {
+            Util.criarMensagemErro("Erro ao importar arquivo" + e.getMessage());
+        }
+
+        if (listaParaSalvarDidsFsm.size() > 0) {
+            csvJpaDAO.createMultiplusDidsFsm(listaParaSalvarDidsFsm);
+            Util.criarMensagemInfo("Dids Importados com sucesso!");
+            Util.chamarFuncaoJs("PF('dlgLigacaoT').hide()");
         }
     }
 
@@ -263,31 +516,37 @@ public class ControleImportacaoCSV implements Serializable {
         this.csvSeparadorCampo = csvSeparadorCampo;
     }
 
-    public Date formataDataPadraoBDComHoras(String data) throws Exception {
+    public Date formataDataPadraoBDComHoras(String data) {
+
         if (data == null || data.equals("")) {
             return null;
         }
         Date date = null;
-        String[] data1 = data.split(" ");
-        if (data1[1].isEmpty()) {
-            data1[1] = data1[2];
-        }
-        if (data1[1].length() == 5) {
-            data1[1] += ":00";
-        }
-
-        if (data.contains("/")) {
-            String[] data2 = data1[0].split("/");
-            data = data2[2] + "-" + data2[1] + "-" + data2[0] + " " + data1[1];
-        } else {
-            String[] data2 = data1[0].split("-");
-            data = data2[2] + "-" + data2[1] + "-" + data2[0] + " " + data1[1];
-        }
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            date = new Date(formatter.parse(data).getTime());
-        } catch (ParseException ex) {
-            Logger.getLogger(ControleImportacaoCSV.class.getName()).log(Level.SEVERE, null, ex);
+            String[] data1 = data.split(" ");
+            if (data1[1].isEmpty()) {
+                data1[1] = data1[2];
+            }
+            if (data1[1].length() == 5) {
+                data1[1] += ":00";
+            }
+
+            if (data.contains("/")) {
+                String[] data2 = data1[0].split("/");
+                data = data2[2] + "-" + data2[1] + "-" + data2[0] + " " + data1[1];
+            } else {
+                String[] data2 = data1[0].split("-");
+                data = data2[2] + "-" + data2[1] + "-" + data2[0] + " " + data1[1];
+            }
+            try {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                date = new Date(formatter.parse(data).getTime());
+            } catch (ParseException ex) {
+                Logger.getLogger(ControleImportacaoCSV.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return null;
         }
         return date;
     }
@@ -322,6 +581,62 @@ public class ControleImportacaoCSV implements Serializable {
 
     public void setListaColunasCliente(List<String> listaColunasCliente) {
         this.listaColunasCliente = listaColunasCliente;
+    }
+
+    public List<String> getListaColunasTelefones() {
+        return listaColunasTelefones;
+    }
+
+    public void setListaColunasTelefones(List<String> listaColunasTelefones) {
+        this.listaColunasTelefones = listaColunasTelefones;
+    }
+
+    public List<Clientes> getListaParaSalvar() {
+        return listaParaSalvar;
+    }
+
+    public void setListaParaSalvar(List<Clientes> listaParaSalvar) {
+        this.listaParaSalvar = listaParaSalvar;
+    }
+
+    public List<Telefones> getListaParaSalvarTelefones() {
+        return listaParaSalvarTelefones;
+    }
+
+    public void setListaParaSalvarTelefones(List<Telefones> listaParaSalvarTelefones) {
+        this.listaParaSalvarTelefones = listaParaSalvarTelefones;
+    }
+
+    public List<String> getListaColunasDids() {
+        return listaColunasDids;
+    }
+
+    public void setListaColunasDids(List<String> listaColunasDids) {
+        this.listaColunasDids = listaColunasDids;
+    }
+
+    public List<Dids> getListaParaSalvarDids() {
+        return listaParaSalvarDids;
+    }
+
+    public void setListaParaSalvarDids(List<Dids> listaParaSalvarDids) {
+        this.listaParaSalvarDids = listaParaSalvarDids;
+    }
+
+    public List<String> getListaColunasDidsFsm() {
+        return listaColunasDidsFsm;
+    }
+
+    public void setListaColunasDidsFsm(List<String> listaColunasDidsFsm) {
+        this.listaColunasDidsFsm = listaColunasDidsFsm;
+    }
+
+    public List<Didsfsm> getListaParaSalvarDidsFsm() {
+        return listaParaSalvarDidsFsm;
+    }
+
+    public void setListaParaSalvarDidsFsm(List<Didsfsm> listaParaSalvarDidsFsm) {
+        this.listaParaSalvarDidsFsm = listaParaSalvarDidsFsm;
     }
 
 }

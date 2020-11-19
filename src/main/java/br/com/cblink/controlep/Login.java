@@ -9,6 +9,7 @@ import br.com.cblink.controlep.entidades.Usuario;
 import br.com.cblink.controlep.jpa.UsuarioJpaDAO;
 import br.com.cblink.controlep.util.Util;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -35,6 +36,8 @@ public class Login implements Serializable {
     private Integer nivel;
 
     private Boolean usuarioLogado;
+    
+    private Date dataH;
 
     @PostConstruct
     public void init() {
@@ -115,4 +118,12 @@ public class Login implements Serializable {
         this.usuarioLogado = usuarioLogado;
     }
 
+    public Date getDataH() {
+        return dataH;
+    }
+
+    public void setDataH(Date dataH) {
+        this.dataH = dataH;
+    }
+  
 }

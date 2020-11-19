@@ -8,7 +8,7 @@
     <packaging>war</packaging>
 
     <name>ControleP</name>
-
+ 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -65,6 +65,7 @@
     </dependencies>
 
     <build>
+        <finalName>ControleP</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

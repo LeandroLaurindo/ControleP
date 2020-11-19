@@ -1,6 +1,8 @@
 package br.com.cblink.controlep.jpa;
 
+import br.com.cblink.controlep.entidades.Clientes;
 import br.com.cblink.controlep.entidades.Dids;
+import br.com.cblink.controlep.entidades.Didsfsm;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
@@ -45,6 +47,54 @@ public class ImportacaoCsvJpaDAO implements Serializable {
                 em = getEntityManager();
                 em.getTransaction().begin();
                 em.persist(dids);
+                em.getTransaction().commit();
+            }
+            return true;
+        } catch (Exception ex) {
+            Logger.getLogger(ImportacaoCsvJpaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+    public boolean createMultiplusDidsFsm(List<Didsfsm> lista) {
+        EntityManager em = getEntityManager();
+        try {
+
+            for (Didsfsm dids : lista) {
+                Integer id = carregarDisDidsfsm(dids.getNumero());
+                if (id == null) {
+                    em.getTransaction().begin();
+                    em.persist(dids);
+                    em.getTransaction().commit();
+                } else {
+                    em.find(Didsfsm.class, id);
+                    em.getTransaction().begin();
+                    em.merge(dids);
+                    em.getTransaction().commit();
+                }
+            }
+            return true;
+        } catch (Exception ex) {
+            Logger.getLogger(ImportacaoCsvJpaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+    public boolean createMultiplusClientes(List<Clientes> lista) {
+        EntityManager em = null;
+        try {
+            for (Clientes clientes : lista) {
+                em = getEntityManager();
+                em.getTransaction().begin();
+                em.persist(clientes);
                 em.getTransaction().commit();
             }
             return true;
@@ -133,6 +183,17 @@ public class ImportacaoCsvJpaDAO implements Serializable {
         }
     }
 
+    public Integer carregarDisDidsfsm(String telefone) {
+        EntityManager em = getEntityManager();
+        try {
+            return (Integer) em.createQuery("SELECT c.id FROM Didsfsm c WHERE c.numero= '" + telefone + "'").getSingleResult();
+        } catch (Throwable e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
     public Dids carregarDids(String jpql) {
         EntityManager em = getEntityManager();
         try {
@@ -156,7 +217,7 @@ public class ImportacaoCsvJpaDAO implements Serializable {
             em.close();
         }
     }
-    
+
     public List<String> busccarNomesColumas(String tab) {
 
         EntityManager manager = ConexaoBD.getConnection();

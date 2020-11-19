@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>ControleP</title>
+                <h:outputScript library="js" name="traducao.js" />
+                <style type="text/css">
+                    .botao:hover{background: #0099ff; color: #ffffff}
+                </style>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+                    <f:view>
+                        <h:form>
+                            <h:outputText value="Olá #{controleLogin.login} seja bem vindo!"  style="clear: initial; float: right; margin-right: 5px;" />
+                            <p:commandButton value="Sair" styleClass="botao" actionListener="#{controleLogin.deslogar()}"  
+                                             style="clear: initial; float: right; margin-right: 20px;"  process="@this" icon="ui-icon-power"/>
+                        </h:form>
+                    </f:view>
+                    <p:graphicImage library="imgs" name="cropped-logo-2-212x61.png" alt="logo" />
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
+                    Rodape
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="175" header="Painel de Menu" collapsible="true">
+                    <h:form>
+                        <p:menu>
+                            <p:submenu label="Menus">
+                                <p:menuitem value="Atendimentos " action="#{ControlerNavegacao.controleChmados()}" ajax="false" />
+                                <p:menuitem value="Usuários " action="#{ControlerNavegacao.cadastroUsuario()}" ajax="false" />
+                                <p:menuitem value="Clientes" action="#{ControlerNavegacao.clientes()}" ajax="false" />
+                                <p:menuitem value="Importar CSV" action="#{ControlerNavegacao.importacao()}" ajax="false" />
+                                <p:menuitem value="Gerar Arquivo" action="#{ControlerNavegacao.gerar()}" ajax="false" />
+
+                            </p:submenu>
+
+                        </p:menu>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <ui:insert  name="inicial" />
+                    <ui:insert  name="importa" />
+                    <ui:insert  name="usuariosCad" />
+                    <ui:insert  name="controleCli" />
+                    <ui:insert  name="controleChama" />
+                    <ui:insert  name="gerarArquivo" />
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+

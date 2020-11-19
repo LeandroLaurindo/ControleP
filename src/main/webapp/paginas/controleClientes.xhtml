@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layoutPadrao.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="controleCli">
+        <p:panel header="Controle Clientes">
+            <f:view>
+                <h:form>
+                    <p:messages autoUpdate="true" closable="true" />
+                </h:form>
+            </f:view>
+
+            <f:view>
+                <h:form id="cadCli">
+                    <p:dialog widgetVar="dlgCliente" closable="true">
+                        <p:fieldset  legend="Criar/Editar">
+                            
+                            <h:panelGrid columns="2">
+                                <p:outputLabel value="Nome:" for="nome" />
+                                <p:inputText id="nome" value="#{controlerCliente.clientes.nome}" size="50" onkeyup="value = value.toUpperCase()" title="Nome" required="true" requiredMessage="O Nome é obrigatório."/>
+                                <p:outputLabel value="CpfCnpj:" for="cpfCnpj" />
+                                <p:inputText id="cpfCnpj" value="#{controlerCliente.clientes.cpfCnpj}" title="CpfCnpj" />
+                                <p:outputLabel value="Telefone:" for="telefone" />
+                                <p:inputText id="telefone" value="#{controlerCliente.clientes.telefone}" title="Telefone" />
+                                <p:outputLabel value="Login:" for="login" />
+                                <p:inputText id="login" value="#{controlerCliente.clientes.login}" title="login" />
+                                <p:outputLabel value="Plataforma" for="plataforma" />
+                                <p:inputText id="plataforma" value="#{controlerCliente.clientes.plataforma}" title="plataforma" />
+                                <p:commandButton value="Salvar" styleClass="botao" actionListener="#{controlerCliente.salvar()}" icon="ui-icon-disk" />
+                                <p:commandButton value="Fechar" styleClass="botao" icon="ui-icon-cancel" onclick="PF('dlgCliente').hide()" process="@this" />
+                            </h:panelGrid>
+                        </p:fieldset>
+                    </p:dialog>
+                </h:form>
+            </f:view>
+            <f:view>
+
+                <h:form id="formTbClientes">
+                    <p:dataTable value="#{controlerCliente.listaDeClientes}" var="item" widgetVar="pausaTable5" paginator="true"
+                                 emptyMessage="Nenhum usuário encontrado!" currentPageReportTemplate="(Pag. {currentPage}/{totalPages} - {totalRecords} registros)"
+                                 rows="10" rowsPerPageTemplate="5,10,15,#{controlerCliente.listaDeClientes.size()}"
+                                 sortBy="#{item.nome}">
+                        <f:facet name="header">
+                            <p:commandButton value="Novo Cliente" styleClass="botao" actionListener="#{controlerCliente.novoCliente()}" oncomplete="PF('dlgCliente').show()" icon="ui-icon-plus" style="float: right; margin-right: 20px;"/>
+                            <h3>Lista de Clientes</h3>
+                        </f:facet>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Id"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.nome}">
+                            <f:facet name="header">
+                                <h:outputText value="Nome"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nome}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="CpfCnpj"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cpfCnpj}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Telefone"/>
+                            </f:facet>
+                            <h:outputText value="#{item.telefone}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Login"/>
+                            </f:facet>
+                            <h:outputText value="#{item.login}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Plataforma"/>
+                            </f:facet>
+                            <h:outputText value="#{item.plataforma}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Ação"/>
+                            </f:facet> 
+                            <p:commandButton value="Editar" styleClass="botao" actionListener="#{controlerCliente.setarClienteEditar(item)}" oncomplete="PF('dlgCliente').show()" process="@this" icon="ui-icon-pencil" />
+                             <p:commandButton value="Excluir" styleClass="botao" actionListener="#{controlerCliente.setarClienteRemover(item)}" oncomplete="PF('dlgConfirmarC').show()" process="@this" icon="ui-icon-pencil" />
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </f:view>
+               <f:view>
+                <h:form> 
+                    <p:dialog header="Confirmação" closable="true" widgetVar="dlgConfirmarC">
+                        <h:panelGrid columns="1">
+                            <h:outputText value="Tem certeza que você deseja excluir este registro?" />
+                            <h:panelGrid columns="2">
+                                <p:commandButton value="SIM" styleClass="botao" actionListener="#{controlerCliente.deletar()}" oncomplete="PF('dlgConfirmarC').hide()" icon="ui-icon-check" iconPos="true" />
+                                <p:commandButton value="NÂO" styleClass="botao" onclick="PF('dlgConfirmarC').hide()" icon="ui-icon-cancel" iconPos="true" />
+                            </h:panelGrid>
+                        </h:panelGrid>
+                    </p:dialog>
+                </h:form>
+            </f:view>
+        </p:panel>
+    </ui:define>
+
+</ui:composition>

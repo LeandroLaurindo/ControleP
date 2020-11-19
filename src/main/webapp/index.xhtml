@@ -6,26 +6,44 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Login</title>
+        <h:outputScript library="js" name="traducao.js" />
         <style type="text/css">
             .login{
-                width:300px;
-                height:300px;
                 position:absolute;
-                top:20%;
-                left:50%;
+                top:30%;
+                left:40%;
                 margin-top:-50px;
                 margin-left:-50px;
+                background-image: linear-gradient(to right,black, white, black );
+                border-radius: 5%;
+                padding: 60px;
             }
-            .botao:hover{background: #0099ff; color: #ffffff}
+            .botao{float: right; margin-top: 10px;}
+            .botao:hover{background: #0099ff; color: #ffffff;}
+            body{
+                background-image: linear-gradient(to right,white, black, white);
+            }
+            .frml{border-radius: 5px;}
+            .ui-fieldset-legend{
+                background: #666666!important;
+                 color: white!important;
+            }
+
         </style>
     </h:head>
     <h:body>
-        <p:panel>
-          
-            <f:view>
-                <h:form styleClass="login">
-                      <p:graphicImage library="imgs" name="cropped-logo-2-212x61.png" alt="logo" style="margin: 0 auto; text-align: center; max-width: 300px;" />
-                    <p:fieldset legend="Login">
+
+
+        <f:view>
+            <div class="login">
+                <p:graphicImage library="imgs" name="cropped-logo-2-212x61.png" alt="logo" style="margin: 0 auto; text-align: center; max-width: 300px;" />
+                <br />
+                <br />
+                <br />
+                <br />
+                <h:form>
+
+                    <p:fieldset legend="Login" styleClass="frml">
                         <p:messages autoUpdate="true" closable="true" />
                         <h:panelGrid columns="1">
                             <p:outputLabel for="usuario" value="Usuário:" />
@@ -36,9 +54,9 @@
                         <p:commandButton value="Logar" styleClass="botao" action="#{controleLogin.logar()}" ajax="false" />
                     </p:fieldset>
                 </h:form>
-            </f:view>
+            </div>
+        </f:view>
 
-        </p:panel>
     </h:body>
 </html>
 

@@ -21,12 +21,14 @@
 
             <p:layout fullPage="true">
 
-                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+                <p:layoutUnit position="north" size="100" resizable="false" closable="false" collapsible="true">
                     <f:view>
                         <h:form>
-                            <h:outputText value="Olá #{controleLogin.login} seja bem vindo!"  style="clear: initial; float: right; margin-right: 5px;" />
+
                             <p:commandButton value="Sair" styleClass="botao" actionListener="#{controleLogin.deslogar()}"  
                                              style="clear: initial; float: right; margin-right: 20px;"  process="@this" icon="ui-icon-power"/>
+                            <h:outputText value="Olá #{controleLogin.login} seja bem vindo!"  style="clear: initial; float: right; margin-right: 5px;" />
+
                         </h:form>
                     </f:view>
                     <p:graphicImage library="imgs" name="cropped-logo-2-212x61.png" alt="logo" />

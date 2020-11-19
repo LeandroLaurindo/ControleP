@@ -10,91 +10,83 @@
     <ui:define name="importa" id="importa">
         <p:panel>
             <f:view>
+                <h:form>
+                    <p:messages autoUpdate="true" closable="true" />
+                </h:form>
+            </f:view>
+
+            <h:panelGrid columns="2">
+            <f:view>
                 <h:form enctype="multipart/form-data">
                     <p:fieldset legend="Importar Telelefones">
-                    <p:fileUpload value="#{controleImportacaoCSV.filess}" label="Click aqui para escolher"
-                                  id="fileUpload2" mode="simple" skinSimple="true" />
-                    <p:commandButton value="Enviar" styleClass="botao" ajax="false"
-                                     actionListener="#{controleImportacaoCSV.importar()}" style="margin-top: 10px; font-size: 20px; padding: 5px;"/>
+                        <p:fileUpload value="#{controleImportacaoCSV.filess}" label="Click aqui para escolher"
+                                      id="fileUpload2" mode="simple" skinSimple="true" />
+                        <p:commandButton value="Enviar" styleClass="botao" ajax="false"
+                                         actionListener="#{controleImportacaoCSV.prepararDadosDids()}" style="margin-top: 10px; font-size: 20px; padding: 5px;"/>
                     </p:fieldset>
                 </h:form>
             </f:view>
-            
-             <f:view>
+
+            <f:view>
                 <h:form enctype="multipart/form-data">
                     <p:fieldset legend="Importar Clientes">
-                    <p:fileUpload value="#{controleImportacaoCSV.filess}" label="Click aqui para escolher"
-                                  id="fileUpload3" mode="simple" skinSimple="true" />
-                    <p:commandButton value="Enviar" styleClass="botao" ajax="false"
-                                     actionListener="#{controleImportacaoCSV.prepararDados()}" style="margin-top: 10px; font-size: 20px; padding: 5px;"/>
+                        <p:fileUpload value="#{controleImportacaoCSV.filess}" label="Click aqui para escolher"
+                                      id="fileUpload3" mode="simple" skinSimple="true" />
+                        <p:commandButton value="Enviar" styleClass="botao" ajax="false"
+                                         actionListener="#{controleImportacaoCSV.prepararDados()}" style="margin-top: 10px; font-size: 20px; padding: 5px;"/>
                     </p:fieldset>
                 </h:form>
             </f:view>
-            <f:view>
-
-                <h:form>
-                    <p:dataTable value="#{controleImportacaoCSV.listaDeDados}" var="item" widgetVar="pausaTable" paginator="true"
-                                 emptyMessage="Nenhum usuário encontrado!" currentPageReportTemplate="(Pag. {currentPage}/{totalPages} - {totalRecords} registros)"
-                                 rows="10" rowsPerPageTemplate="5,10,15,#{controleImportacaoCSV.listaDeDados.size()}"
-                                 sortBy="#{item.numero}">
-                        <f:facet name="header">
-                            <h3>Lista de Telefones</h3>
-                        </f:facet>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="Id"/>
-                            </f:facet>
-                            <h:outputText value="#{item.id}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="Numero"/>
-                            </f:facet>
-                            <h:outputText value="#{item.numero}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="Operadora"/>
-                            </f:facet>
-                            <h:outputText value="#{item.operadora}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="Nome"/>
-                            </f:facet>
-                            <h:outputText value="#{item.nome}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="DataPortabilidade"/>
-                            </f:facet>
-                            <h:outputText value="#{item.dataPortabilidade}">
-                                <f:convertDateTime pattern="yyyy/dd/MM HH:mm:ss" />
-                            </h:outputText>
-                        </p:column>
-                    </p:dataTable>
-                </h:form>
-            </f:view>
+            </h:panelGrid>
+           
 
             <f:view>
                 <h:form id="frmLigacao">
-                    <p:dialog header="Atenção ao ligar ligar as colunas" widgetVar="dlgLigacao">
+                    <p:dialog header="Atenção ao ligar as colunas" widgetVar="dlgLigacao">
                         <h:dataTable value="#{controleImportacaoCSV.listaColulasPlanilha}" var="item">
+                             <p:messages autoUpdate="true" closable="true" />
                             <p:column headerText="Associação de campos">
-                                <h:outputText value="#{item.coluna}" style="size: 20px;" />
+
+                                <h:outputText value="#{item.coluna}" style="width:100px!important;"/>
                                 <h:outputText value="==>" />
-                                <p:selectOneMenu id="colunaTabela" value="#{controleImportacaoCSV.nomeColuna}">
+                                <p:selectOneMenu id="colunaTabela" value="#{controleImportacaoCSV.nomeColuna}" style="min-width: 100px!important;">
                                     <!-- TODO: update below reference to list of available items-->
                                     <p:ajax  process="colunaTabela" event="change" listener="#{controleImportacaoCSV.metodoDeAssociacao(item.indice)}"/>
-                                    <f:selectItems value="#{controleImportacaoCSV.listaColunasCliente}" var="cli" itemLabel="#{cli}" itemValue="#{cli}"/>
+                                    <f:selectItems value="#{controleImportacaoCSV.listaColunasCliente}" var="cli" itemLabel="#{cli}" itemValue="#{cli}" />
                                 </p:selectOneMenu>
+
                             </p:column>
                         </h:dataTable>
+                        <hr />
                         <p:commandButton value="Importar" actionListener="#{controleImportacaoCSV.importarCliente()}" class="botao" />
                     </p:dialog>
                 </h:form>
             </f:view>
             
+             <f:view>
+                <h:form id="frmLigacaof">
+                    <p:dialog header="Atenção ao ligar as colunas" widgetVar="dlgLigacaoT">
+                         <p:messages autoUpdate="true" closable="true" />
+                        <h:dataTable value="#{controleImportacaoCSV.listaColulasPlanilha}" var="item2">
+                            <p:column headerText="Associação de campos">
+
+                                <h:outputText value="#{item2.coluna}" style="width:100px!important;"/>
+                                <h:outputText value="==>" />
+                                <p:selectOneMenu id="colunaTabelag" value="#{controleImportacaoCSV.nomeColuna}" style="min-width: 100px!important;">
+                                    <!-- TODO: update below reference to list of available items-->
+                                    <p:ajax  process="colunaTabelag" event="change" listener="#{controleImportacaoCSV.metodoDeAssociacaoDids(item2.indice)}"/>
+                                    <f:selectItems value="#{controleImportacaoCSV.listaColunasDids}" var="cli1" itemLabel="#{cli1}" itemValue="#{cli1}" />
+                                </p:selectOneMenu>
+
+                            </p:column>
+
+                        </h:dataTable>
+                        <hr />
+                        <p:commandButton value="Importar" actionListener="#{controleImportacaoCSV.importarDids()}" class="botao" />
+                    </p:dialog>
+                </h:form>
+            </f:view>
+
         </p:panel>
     </ui:define>
 

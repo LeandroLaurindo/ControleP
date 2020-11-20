@@ -340,8 +340,8 @@ public class ControleImportacaoCSV implements Serializable {
 
         if (listaParaSalvarDids.size() > 0) {
             csvJpaDAO.createMultiplus(listaParaSalvarDids);
-            Util.criarMensagemInfo("DidsFsm Importados com sucesso!");
-            Util.chamarFuncaoJs("PF('dlgLigacaoD').hide()");
+            Util.criarMensagemInfo("Dids Importados com sucesso!");
+            Util.chamarFuncaoJs("PF('dlgLigacaoT').hide()");
         }
     }
 
@@ -365,7 +365,7 @@ public class ControleImportacaoCSV implements Serializable {
                                 if (dc.getColuna().equalsIgnoreCase("numero")) {
                                     didsd.setNumero(dados[i]);
                                 }
-                            }
+                            
                             if (dc.getColuna().equalsIgnoreCase("operadora")) {
                                 didsd.setOperadora(dados[i]);
 
@@ -382,6 +382,7 @@ public class ControleImportacaoCSV implements Serializable {
                                 didsd.setRamal(dados[i]);
                             }
                         }
+                        }
                     }
 
                     listaParaSalvarDidsFsm.add(didsd);
@@ -392,10 +393,10 @@ public class ControleImportacaoCSV implements Serializable {
             Util.criarMensagemErro("Erro ao importar arquivo" + e.getMessage());
         }
 
-        if (listaParaSalvarDidsFsm.size() > 0) {
+        if (listaParaSalvarDidsFsm.size() > 0) {            
             csvJpaDAO.createMultiplusDidsFsm(listaParaSalvarDidsFsm);
-            Util.criarMensagemInfo("Dids Importados com sucesso!");
-            Util.chamarFuncaoJs("PF('dlgLigacaoT').hide()");
+            Util.criarMensagemInfo("DidsFsm Importados com sucesso!");
+            Util.chamarFuncaoJs("PF('dlgLigacaoD').hide()");
         }
     }
 

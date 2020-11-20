@@ -35,19 +35,23 @@ public class ControleChamados implements Serializable {
         chamados = new Chamadosatendidos();
         listaClientes = new ArrayList<>();
         listaClientes = jpaController.findClientesEntities();
+        listarD();
+    }
+
+    public void listarD() {
         listaChamadosatendidos = new ArrayList<>();
-         List<Chamadosatendidos> aux = new ArrayList<>();
+        List<Chamadosatendidos> aux = new ArrayList<>();
         aux = jpaController.listarAtendimentos("SELECT c FROM Chamadosatendidos c WHERE c.dataFim is null ORDER BY c.dataInicio DESC");
         for (Chamadosatendidos ca : aux) {
             boolean salva = true;
             for (Chamadosatendidos cb : listaChamadosatendidos) {
-                if(ca.getClientesId().getNome().equalsIgnoreCase(cb.getClientesId().getNome())){
+                if (ca.getClientesId().getNome().equalsIgnoreCase(cb.getClientesId().getNome())) {
                     salva = false;
                     break;
                 }
             }
-            if(salva){
-              listaChamadosatendidos.add(ca);
+            if (salva) {
+                listaChamadosatendidos.add(ca);
             }
         }
         Util.updateComponente("formTbChamados");
@@ -78,10 +82,36 @@ public class ControleChamados implements Serializable {
             try {
                 cliente = listaChamadosatendidos.get(0).getClientesId();
             } catch (Exception e) {
-                
+
             }
         }
-        
+
+        Util.updateComponente("formTbChamados");
+    }
+
+    public void listaConfiltrosP(Integer id) {
+        String jpql = "SELECT c FROM Chamadosatendidos c";
+        String hql = "";
+        if (id != null) {
+            hql = " WHERE (c.clientesId.id=" + id + "";
+            if (!hql.isEmpty()) {
+                hql += ")";
+                jpql += hql;
+            }
+        }
+        jpql += " ORDER BY c.dataInicio DESC";
+        //System.err.println(jpql);
+        listaChamadosatendidos = new ArrayList<>();
+        listaChamadosatendidos = jpaController.listarConfiltros(jpql);
+        //System.err.println(listaChamadosatendidos.size());
+        if (listaChamadosatendidos.size() > 0) {
+            try {
+                cliente = listaChamadosatendidos.get(0).getClientesId();
+            } catch (Exception e) {
+
+            }
+        }
+
         Util.updateComponente("formTbChamados");
     }
 

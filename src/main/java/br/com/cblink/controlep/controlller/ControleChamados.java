@@ -11,6 +11,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -54,6 +55,8 @@ public class ControleChamados implements Serializable {
                 listaChamadosatendidos.add(ca);
             }
         }
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        requestContext.execute("PF('pausaTable2').clearFilters()");
         Util.updateComponente("formTbChamados");
     }
 
@@ -77,7 +80,7 @@ public class ControleChamados implements Serializable {
         //System.err.println(jpql);
         listaChamadosatendidos = new ArrayList<>();
         listaChamadosatendidos = jpaController.listarConfiltros(jpql);
-        //System.err.println(listaChamadosatendidos.size());
+       // System.err.println(listaChamadosatendidos.size());
         if (listaChamadosatendidos.size() > 0) {
             try {
                 cliente = listaChamadosatendidos.get(0).getClientesId();
@@ -111,7 +114,8 @@ public class ControleChamados implements Serializable {
 
             }
         }
-
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        requestContext.execute("PF('pausaTable2').clearFilters()");
         Util.updateComponente("formTbChamados");
     }
 

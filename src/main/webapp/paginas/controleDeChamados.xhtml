@@ -39,8 +39,8 @@
                             </h:panelGrid>
 
 
-                            <p:commandButton value="Salvar" styleClass="botao" icon="ui-icon-disk" actionListener="#{controleChamados.salvar()}" />
-                            <p:commandButton value="Fechar" styleClass="botao" icon="ui-icon-cancel" onclick="PF('dlgAtendimento').hide()" process="@this" />
+                            <p:commandButton value="Salvar" styleClass="botao" icon="ui-icon-disk" actionListener="#{controleChamados.salvar()}" style="float: right;"/>
+                            <p:commandButton value="Fechar" styleClass="botao" icon="ui-icon-cancel" onclick="PF('dlgAtendimento').hide()" process="@this" style="float: right;"/>
                         </p:fieldset>
                     </p:dialog>
                 </h:form>
@@ -51,16 +51,16 @@
                                  emptyMessage="Nenhum usuário encontrado!" currentPageReportTemplate="(Pag.{currentPage}/{totalPages} - {totalRecords} registros)"
                                  rows="10" rowsPerPageTemplate="10,20,40,#{controleChamados.listaChamadosatendidos.size()}">
                         <f:facet name="header">
-                            
+
                             <p:commandButton value="Novo Chamado" styleClass="botao"  actionListener="#{controleChamados.novoChamadosatendidos()}" icon="ui-icon-plus" style="float: right; margin-right: 20px;" oncomplete="PF('dlgAtendimento').show()"/>
-                            <p:commandButton value="Atualizar" process="@this" actionListener="#{controleChamados.listarD()}" style="float: left; margin: 20px;"  />
+                            <p:commandButton value="Atualizar" styleClass="botao" process="@this" actionListener="#{controleChamados.listarD()}" style="float: left; margin: 20px;"  />
                             <h3>Lista de Chamados</h3>
                         </f:facet>
                         <p:column filterBy="#{item.clientesId.nome}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="Cliente"/>
                             </f:facet>
-                            <p:commandButton value="#{item.clientesId.nome}" process="@this" actionListener="#{controleChamados.listaConfiltrosP(item.clientesId.id)}"  />
+                            <p:commandButton value="#{item.clientesId.nome}" process="@this" actionListener="#{controleChamados.listaConfiltrosP(item.clientesId.id)}" style="background: none!important; color: black!important;"/>
                         </p:column>
                         <p:column filterBy="#{item.solicitante}" filterMatchMode="contains">
                             <f:facet name="header">
@@ -78,10 +78,9 @@
                             <f:facet name="header">
                                 <h:outputText value="Descricao serviço" style="font-size: 10px!important;"/>
                             </f:facet>
-                            <p:commandButton value="" styleClass="botao" actionListener="#{controleChamados.setarDescricao(item.descricaoservico)}" 
+                            <p:commandButton value="" styleClass="botaoDetalhe" actionListener="#{controleChamados.setarDescricao(item.descricaoservico)}" 
                                              oncomplete="PF('dlgDescricao').show()" 
-                                             icon="ui-icon-search" process="@this"
-                                             style="width: 40px; height: 30px; padding: 5px;"/>
+                                             icon="ui-icon-search" process="@this" title="Mostrar detalhes"/>
 
                         </p:column>
                         <p:column width="100">
@@ -104,9 +103,9 @@
                             <f:facet name="header">
                                 <h:outputText value="Ação" />
                             </f:facet>
-                            <p:commandButton value=""  styleClass="botao" actionListener="#{controleChamados.finalizar(item)}" icon="ui-icon-check"  process="@this" rendered="#{item.dataFim == null}" style="width: 25px; height: 20px; padding: 5px; margin-right: 5px;"/>
-                            <p:commandButton value="" styleClass="botao" actionListener="#{controleChamados.setarChamadosatendidosEditar(item)}" icon="ui-icon-pencil" process="@this" oncomplete="PF('dlgAtendimento').show()" style="width: 25px; height: 20px; padding: 5px; margin-right: 5px;"/>
-                            <p:commandButton value="" styleClass="botao" actionListener="#{controleChamados.setarChamadosatendidosRemover(item)}" icon="ui-icon-trash" process="@this" oncomplete="PF('dlgConfirmarD').show()" style="width: 25px; height: 20px; padding: 5px; margin-right: 5px;"/>
+                            <p:commandButton value="" styleClass="botaoIcones" actionListener="#{controleChamados.finalizar(item)}" icon="ui-icon-check"  process="@this" rendered="#{item.dataFim == null}" title="Finalizar"/>
+                            <p:commandButton value="" styleClass="botaoIcones" actionListener="#{controleChamados.setarChamadosatendidosEditar(item)}" icon="ui-icon-pencil" process="@this" oncomplete="PF('dlgAtendimento').show()" title="Fechar"/>
+                            <p:commandButton value="" styleClass="botaoIcones" actionListener="#{controleChamados.setarChamadosatendidosRemover(item)}" icon="ui-icon-trash" process="@this" oncomplete="PF('dlgConfirmarD').show()" title="Excluir"/>
                         </p:column>
                     </p:dataTable>
                 </h:form>

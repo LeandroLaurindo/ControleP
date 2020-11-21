@@ -3,11 +3,13 @@ package br.com.cblink.controlep.jpa;
 import br.com.cblink.controlep.entidades.Clientes;
 import br.com.cblink.controlep.entidades.Dids;
 import br.com.cblink.controlep.entidades.Didsfsm;
+import br.com.cblink.controlep.entidades.Telefones;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -40,6 +42,16 @@ public class ImportacaoCsvJpaDAO implements Serializable {
         }
     }
 
+    public String verifcar(String numero) {
+        String hql = "SELECT c.numero FROM Dids c WHERE c.numero = '" + numero + "'";
+        EntityManager em = getEntityManager();
+        try {
+            return (String) em.createQuery(hql).getSingleResult();
+        } catch (NoResultException ex) {
+            return "";
+        }
+    }
+
     public boolean createMultiplus(List<Dids> lista) {
         EntityManager em = null;
         try {
@@ -60,6 +72,81 @@ public class ImportacaoCsvJpaDAO implements Serializable {
         }
     }
 
+    public boolean createDidsFsm(Didsfsm dids) {
+        EntityManager em = getEntityManager();
+        try {
+            Integer id = carregarDisDidsfsm(dids.getNumero());
+            if (id == null) {
+                em.getTransaction().begin();
+                em.persist(dids);
+                em.getTransaction().commit();
+            } else {
+                em.find(Didsfsm.class, id);
+                em.getTransaction().begin();
+                em.merge(dids);
+                em.getTransaction().commit();
+            }
+            return true;
+        } catch (Exception ex) {
+            Logger.getLogger(ImportacaoCsvJpaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+    
+    
+     public boolean createClientes(Clientes clientes) {
+        EntityManager em = getEntityManager();
+        try {
+            Integer id = carregarClientes(clientes.getCpfCnpj());
+            if (id == null) {
+                em.getTransaction().begin();
+                em.persist(clientes);
+                em.getTransaction().commit();
+            } else {
+                em.find(Clientes.class, id);
+                em.getTransaction().begin();
+                em.merge(clientes);
+                em.getTransaction().commit();
+            }
+            return true;
+        } catch (Exception ex) {
+            Logger.getLogger(ImportacaoCsvJpaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+      public boolean createTelefones(Telefones telefones) {
+        EntityManager em = getEntityManager();
+        try {
+            Integer id = carregarTelefones(telefones.getNumero());
+            if (id == null) {
+                em.getTransaction().begin();
+                em.persist(telefones);
+                em.getTransaction().commit();
+            } else {
+                em.find(Telefones.class, id);
+                em.getTransaction().begin();
+                em.merge(telefones);
+                em.getTransaction().commit();
+            }
+            return true;
+        } catch (Exception ex) {
+            Logger.getLogger(ImportacaoCsvJpaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
     public boolean createMultiplusDidsFsm(List<Didsfsm> lista) {
         EntityManager em = getEntityManager();
         try {
@@ -193,7 +280,28 @@ public class ImportacaoCsvJpaDAO implements Serializable {
             em.close();
         }
     }
-
+    
+     public Integer carregarClientes(String documento) {
+        EntityManager em = getEntityManager();
+        try {
+            return (Integer) em.createQuery("SELECT c.id FROM Clientes c WHERE c.cpfCnpj= '" + documento + "'").getSingleResult();
+        } catch (Throwable e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+ public Integer carregarTelefones(String telefone) {
+        EntityManager em = getEntityManager();
+        try {
+            return (Integer) em.createQuery("SELECT c.idTelefone FROM Telefones c WHERE c.numero= '" + telefone + "'").getSingleResult();
+        } catch (Throwable e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+     
     public Dids carregarDids(String jpql) {
         EntityManager em = getEntityManager();
         try {

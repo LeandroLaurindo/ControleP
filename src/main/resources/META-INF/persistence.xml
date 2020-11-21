@@ -10,9 +10,9 @@
         <class>br.com.cblink.controlep.entidades.Didsfsm</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
-           
+          
            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql:///"/> 
-            <property name="javax.persistence.jdbc.user" value="postgres"/>
+            <property name="javax.persistence.jdbc.user" value=""/>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="javax.persistence.jdbc.password" value=""/>
             <property name="eclipselink.cache.shared.default" value="false"/>

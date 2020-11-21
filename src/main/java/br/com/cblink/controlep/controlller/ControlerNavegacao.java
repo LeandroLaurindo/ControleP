@@ -24,14 +24,19 @@ public class ControlerNavegacao implements Serializable {
     public String importacao() {
         return "/paginas/importacaocsv.xhtml?faces-redirect=true";
     }
-
+    
+    public String importacaoClientes() {
+        return "/paginas/importaPlanilhaClientes.xhtml?faces-redirect=true";
+    }
     public String cadastroUsuario() {
         return "/paginas/controleUsuarios.xhtml?faces-redirect=true";
     }
 
     public String controleChmados() {
+         System.err.println("Chamou controleChmados");
         return "/paginas/controleDeChamados.xhtml?faces-redirect=true";
     }
+
     public String clientes() {
         return "/paginas/controleClientes.xhtml?faces-redirect=true";
     }
@@ -39,7 +44,20 @@ public class ControlerNavegacao implements Serializable {
     public String home() {
         return "/paginas/home.xhtml?faces-redirect=true";
     }
-      public String gerar() {
+
+    public String gerar() {
         return "/paginas/gerarArquivo.xhtml?faces-redirect=true";
     }
+
+    public String importar() {
+        return "/paginas/importaplanilha.xhtml?faces-redirect=true";
+    }
+    
+    public String importarDidsFsm() {
+        return "/paginas/importaplanilhaDidsFsm.xhtml?faces-redirect=true";
+    }
+    public String importarTelefones() {
+        return "/paginas/importaPlanilhaTelefones.xhtml?faces-redirect=true";
+    }
+    
 }

@@ -11,56 +11,97 @@
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
                 <title>ControleP</title>
                 <h:outputScript library="js" name="traducao.js" />
-                <style type="text/css">
-                    .botao:hover{background: #0099ff; color: #ffffff}
+                <link rel="shortcut icon" type="image/x-icon" href="#{resource['imgs/favicon.ico']}"/>
+               <style type="text/css">
+                    .botao:hover{background: #ffffff!important;}
+                    .botao:hover .ui-button-text{color: #0099ff;}
+                    .botaoIcones{width: 25px; height: 20px; padding: 5px; margin-right: 5px;}
+                    .botaoDetalhe{width: 30px; height: 20px; padding: 5px;}
+                    .botaoIcones:hover{width: 35px; height: 25px;}
+                    .botaoDetalhe:hover{width: 35px; height: 25px;}
+             
                 </style>
             </f:facet>
         </h:head>
 
         <h:body>
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" widgetVar="msgStatus" />
+            <p:dialog widgetVar="statusDialog" modal="false" draggable="false" closable="false" resizable="false" showHeader="false">
+                <p:outputLabel value="Aguarde..." />
+            </p:dialog>
+            <p:layout fullPage="true" >
 
-            <p:layout fullPage="true">
+                <p:layoutUnit position="north" size="100" resizable="false" closable="false" collapsible="true" styleClass="topo">
+                    <p:graphicImage library="imgs" name="cropped-logo-2-212x61.png" alt="logo" style="float: left;" />
 
-                <p:layoutUnit position="north" size="100" resizable="false" closable="false" collapsible="true">
+                    <div style="margin-left: 550px; margin-top: 5px;">
+                        <p:clock pattern="dd/MM/yyyy HH:mm:ss " mode="server" />
+                    </div>
                     <f:view>
-                        <h:form>
-
+                        <h:form style="float: right; margin-right: 20px;">
+                            <h:outputText value="Olá #{controleLogin.login} seja bem vindo!" style="margin-right: 10px;"/>
                             <p:commandButton value="Sair" styleClass="botao" actionListener="#{controleLogin.deslogar()}"  
-                                             style="clear: initial; float: right; margin-right: 20px;"  process="@this" icon="ui-icon-power"/>
-                            <h:outputText value="Olá #{controleLogin.login} seja bem vindo!"  style="clear: initial; float: right; margin-right: 5px;" />
+                                             process="@this" icon="ui-icon-power"/>
 
                         </h:form>
                     </f:view>
-                    <p:graphicImage library="imgs" name="cropped-logo-2-212x61.png" alt="logo" />
+
+
+
+
                 </p:layoutUnit>
 
                 <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
-                    Rodape
+                    rodape
                 </p:layoutUnit>
 
-                <p:layoutUnit position="west" size="175" header="Painel de Menu" collapsible="true">
+                <p:layoutUnit position="west" size="250" header="Opções" collapsible="true">
+                    <h:form style=" max-width: 170px; font-size: 10px!important;">
+                        <p:fieldset legend="MUDAR TEMA" >
+                            <p:themeSwitcher id="basic" style="width:165px" value="#{temaBean.tema}">
+                                <f:selectItem itemLabel="Choose Theme" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{temaBean.temas}" var="tema" itemLabel="#{tema}" itemValue="#{tema}" />
+                                <f:ajax />
+                            </p:themeSwitcher>
+                        </p:fieldset>
+                    </h:form>
+
                     <h:form>
                         <p:menu>
                             <p:submenu label="Menus">
                                 <p:menuitem value="Atendimentos " action="#{ControlerNavegacao.controleChmados()}" ajax="false" />
                                 <p:menuitem value="Usuários " action="#{ControlerNavegacao.cadastroUsuario()}" ajax="false" />
                                 <p:menuitem value="Clientes" action="#{ControlerNavegacao.clientes()}" ajax="false" />
-                                <p:menuitem value="Importar CSV" action="#{ControlerNavegacao.importacao()}" ajax="false" />
+                                <p:menuitem value="Importar Clientes" action="#{ControlerNavegacao.importacaoClientes()}" ajax="false" />
+                                <p:menuitem value="Importar Dids" actionListener="${importacaoBean.startBar}" action="#{ControlerNavegacao.importar()}" ajax="false" />
+                                <p:menuitem value="Importar DidsFsm " actionListener="${importacaoBean.startBar}" action="#{ControlerNavegacao.importarDidsFsm()}" ajax="false" />
+                                <p:menuitem value="Importar Telefones " actionListener="${importacaoBean.startBar}" action="#{ControlerNavegacao.importarTelefones()}" ajax="false" />
                                 <p:menuitem value="Gerar Arquivo" action="#{ControlerNavegacao.gerar()}" ajax="false" />
 
                             </p:submenu>
 
                         </p:menu>
                     </h:form>
+                    <br/>
+                    <p:outputLabel for="Progr" value="Importação de Arquivos: " />
+                    <h:form id="Progr"  > 
+                        <p:progressBar widgetVar="pbAjax" ajax="true" value="#{progressBarView.progress}"   labelTemplate="{value}%" style=" width:auto; height:20px"  global="false" >
+                            <p:ajax event="complete" listener="#{progressBarView.onComplete}"  />
+                        </p:progressBar>
+                    </h:form>
                 </p:layoutUnit>
 
                 <p:layoutUnit position="center">
-                    <ui:insert  name="inicial" />
-                    <ui:insert  name="importa" />
-                    <ui:insert  name="usuariosCad" />
-                    <ui:insert  name="controleCli" />
-                    <ui:insert  name="controleChama" />
-                    <ui:insert  name="gerarArquivo" />
+                    <ui:insert name="inicial" />
+                    <ui:insert name="importa" />
+                    <ui:insert name="usuariosCad" />
+                    <ui:insert name="controleCli" />
+                    <ui:insert name="controleChama" />
+                    <ui:insert name="gerarArquivo" />
+                    <ui:insert name="inportaArquivo" />
+                    <ui:insert name="inportaArquivoDidsFsm" />
+                    <ui:insert name="inportaClientes" />
+                    <ui:insert name="inportaTelefones" />
                 </p:layoutUnit>
 
             </p:layout>

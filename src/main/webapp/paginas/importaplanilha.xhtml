@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layoutPadrao.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="inportaArquivo" id="inportaArquivo">
+        <p:panel>
+            <h:form id="form">
+                <p:growl id="messages" showDetail="true"   />
+                <p:fileUpload value="#{importacaoBean.arquivo}" id="upl"  fileUploadListener="#{importacaoBean.fileUploadAction}" mode="advanced" dragDropSupport="true" 
+                              update="messages" sizeLimit="1000000000000000000" multiple="false"  allowTypes="/(\.|\/)(csv|accdb|accde|accdr|accdt|mdw|laccdb)$/"
+                              auto="true" label="Importar arquivo csv" invalidFileMessage="Somente é permitido carregar arquivos no formato .csv ( ; ou , )" />
+            </h:form>
+
+            <p:dialog widgetVar="access"  width="300" modal="false"  draggable="false" closable="true" resizable="false" showHeader="false"   > 
+                <h:form id="accessfm" > 
+                    <h4 style="margin-top:0">Selecione a tabela:</h4>
+                    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" >
+                        <p:selectOneButton  value="#{importacaoBean.selectAccess}" id="tabela"  widgetVar="rd"    >                  
+                            <f:selectItems   value="#{importacaoBean.access}"   var="tb" itemValue="#{tb}"    itemLabel=" #{tb}"  />
+                        </p:selectOneButton>
+                    </h:panelGrid>
+                    <p:commandButton value="Ok" update="form6" action="#{importacaoBean.tabelaAssociacao()}"   actionListener="#{importacaoBean.refreshImport()}"    onclick="PF('access').hide()"    style=" float: right ;margin-right:20px;">
+                        <p:resetInput target="form" />
+                    </p:commandButton>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog   widgetVar="planilhaCamposAde"   height="500" width="700" modal="false" responsive="true" showHeader="false"  header="IMPORTAÇÃO DE ARQUIVO"  >
+                <h:form id="form6"   >
+                    <h:outputText class="negrito" value="Requisitos essenciais para inserção de dados:"   /><br/>
+                    <h:outputText value=" Controle de DIDS: NUMERO, OPERADORA, NOME, DATA_PORTABILIDADE;"  /> <br/>
+                    <h:outputText class="negrito" value="Verifique se o sistema associou corretamente as colunas:"   /><br/>
+
+                    <br /> 
+
+                    <p:dataTable var="col" value="#{importacaoBean.colunas}"   >
+                        <p:column headerText="COLUNAS ARQUIVO EXTERNO"  >
+                            <h:outputText class="negrito" value="#{col.coluna.toUpperCase()}" />
+                        </p:column>
+
+                        <p:column headerText="BANCO DE DADOS => #{importacaoBean.tipoArquivo} " style=" text-align: center; " >
+                            <h:selectOneMenu value="#{col.campoAssociado}" style="width:250px  "   >
+                                <f:selectItem itemLabel="Selecione" itemValue="" />
+                                <f:selectItems value="#{importacaoBean.cars}" />
+                            </h:selectOneMenu>
+                        </p:column>
+                    </p:dataTable>
+
+                    <br/>
+                    <div align="center">
+                        <p:commandButton  value="CLIQUE AQUI PARA INICIAR A IMPORTAÇÃO" actionListener="#{importacaoBean.leitorInsert()}"  onclick="PF('planilhaCamposAde').hide();PF('pbAjax').start()"   >
+                        </p:commandButton>
+                        <p:commandButton value="CANCELAR" onclick="PF('planilhaCamposAde').hide()"></p:commandButton>
+                    </div>
+                    <br/>
+                    <br/>
+                </h:form >
+            </p:dialog>
+        </p:panel>
+    </ui:define>
+
+</ui:composition>

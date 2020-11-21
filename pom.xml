@@ -50,6 +50,16 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.healthmarketscience.jackcess</groupId>
+            <artifactId>jackcess</artifactId>
+            <version>1.2.12</version>
+        </dependency>
+        <dependency>
+            <groupId>jxl</groupId>
+            <artifactId>jxl</artifactId>
+            <version>2.6.12.1</version>
+        </dependency>
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>

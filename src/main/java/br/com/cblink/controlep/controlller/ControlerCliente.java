@@ -12,14 +12,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
-
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 /**
  *
  * @author Leandro Laurindo
  */
-@ManagedBean(name = "controlerCliente")
+@Named(value ="controlerCliente")
 @ViewScoped
 public class ControlerCliente implements Serializable {
 

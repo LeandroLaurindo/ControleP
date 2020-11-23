@@ -6,14 +6,14 @@
 package br.com.cblink.controlep.controlller;
 
 import java.io.Serializable;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 /**
  *
  * @author Leandro Laurindo
  */
-@ManagedBean(name = "ControlerNavegacao")
+@Named(value = "ControlerNavegacao")
 @ViewScoped
 public class ControlerNavegacao implements Serializable {
 

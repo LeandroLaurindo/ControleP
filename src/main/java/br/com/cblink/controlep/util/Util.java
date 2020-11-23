@@ -7,7 +7,6 @@ package br.com.cblink.controlep.util;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -47,7 +46,7 @@ public class Util {
      * @param id
      */
     public static void resetarComponente(String id) {
-        RequestContext.getCurrentInstance().reset("");
+        org.primefaces.PrimeFaces.current().resetInputs("");
     }
 
     /**
@@ -55,7 +54,7 @@ public class Util {
      * @param id
      */
     public static void updateComponente(String id) {
-        RequestContext.getCurrentInstance().update(id);
+        org.primefaces.PrimeFaces.current().ajax().update(id);
     }
 
     /**
@@ -63,6 +62,6 @@ public class Util {
      * @param js
      */
     public static void chamarFuncaoJs(String js) {
-        RequestContext.getCurrentInstance().execute(js);
+        org.primefaces.PrimeFaces.current().executeScript(js);
     }
 }

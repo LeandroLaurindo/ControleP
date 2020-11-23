@@ -12,7 +12,9 @@
         <p:panel header="Geração de Arquico">
             <f:view>
                 <h:form>
-                    <p:messages autoUpdate="true" closable="true" />
+                    <p:messages closable="true">
+                        <p:autoUpdate />
+                    </p:messages>
                     <p:commandButton value="Gerar Arquivo" actionListener="#{controlerGerarArquivo.filtrarDados()}" icon="ui-icon-plus" />
                 </h:form>
             </f:view>

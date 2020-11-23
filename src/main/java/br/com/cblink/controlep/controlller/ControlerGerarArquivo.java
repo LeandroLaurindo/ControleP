@@ -18,14 +18,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 /**
  *
  * @author Leandro Laurindo
  */
-@ManagedBean(name = "controlerGerarArquivo")
+@Named(value = "controlerGerarArquivo")
 @ViewScoped
 public class ControlerGerarArquivo implements Serializable {
 

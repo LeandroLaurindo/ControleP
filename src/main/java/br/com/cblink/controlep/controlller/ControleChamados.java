@@ -9,15 +9,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
-import org.primefaces.context.RequestContext;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 /**
  *
  * @author Leandro Laurindo
  */
-@ManagedBean(name = "controleChamados")
+@Named(value = "controleChamados")
 @ViewScoped
 public class ControleChamados implements Serializable {
 
@@ -55,9 +54,10 @@ public class ControleChamados implements Serializable {
                 listaChamadosatendidos.add(ca);
             }
         }
-        RequestContext requestContext = RequestContext.getCurrentInstance();
-        requestContext.execute("PF('pausaTable2').clearFilters()");
-        Util.updateComponente("formTbChamados");
+        org.primefaces.PrimeFaces.current().executeScript("PF('pausaTable2').clearFilters()");
+
+        org.primefaces.PrimeFaces.current().ajax().update("formTbChamados");
+
     }
 
     public void listar() {
@@ -80,7 +80,7 @@ public class ControleChamados implements Serializable {
         //System.err.println(jpql);
         listaChamadosatendidos = new ArrayList<>();
         listaChamadosatendidos = jpaController.listarConfiltros(jpql);
-       // System.err.println(listaChamadosatendidos.size());
+        // System.err.println(listaChamadosatendidos.size());
         if (listaChamadosatendidos.size() > 0) {
             try {
                 cliente = listaChamadosatendidos.get(0).getClientesId();
@@ -114,9 +114,9 @@ public class ControleChamados implements Serializable {
 
             }
         }
-        RequestContext requestContext = RequestContext.getCurrentInstance();
-        requestContext.execute("PF('pausaTable2').clearFilters()");
-        Util.updateComponente("formTbChamados");
+        org.primefaces.PrimeFaces.current().executeScript("PF('pausaTable2').clearFilters()");
+
+        org.primefaces.PrimeFaces.current().ajax().update("formTbChamados");
     }
 
     public void salvar() {

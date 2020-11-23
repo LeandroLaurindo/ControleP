@@ -11,7 +11,9 @@
         <p:panel>
             <f:view>
                 <h:form>
-                    <p:messages autoUpdate="true" closable="true" />
+                    <p:messages closable="true" >
+                        <p:autoUpdate />
+                    </p:messages>
                 </h:form>
             </f:view>
 
@@ -55,7 +57,9 @@
                 <h:form id="frmLigacao">
                     <p:dialog header="Atenção ao ligar as colunas" widgetVar="dlgLigacao">
                         <h:dataTable value="#{controleImportacaoCSV.listaColulasPlanilha}" var="item">
-                            <p:messages autoUpdate="true" closable="true" />
+                            <p:messages closable="true">
+                                <p:autoUpdate />
+                            </p:messages>
                             <p:column headerText="Associação de campos">
 
                                 <h:outputText value="#{item.coluna}" style="width:100px!important;"/>
@@ -77,7 +81,9 @@
             <f:view>
                 <h:form id="frmLigacaof">
                     <p:dialog header="Atenção ao ligar as colunas" widgetVar="dlgLigacaoT">
-                        <p:messages autoUpdate="true" closable="true" />
+                        <p:messages closable="true">
+                            <p:autoUpdate />
+                        </p:messages>
                         <h:dataTable value="#{controleImportacaoCSV.listaColulasPlanilha}" var="item2">
                             <p:column headerText="Associação de campos">
 
@@ -100,7 +106,9 @@
             <f:view>
                 <h:form id="frmLigacaod">
                     <p:dialog header="Atenção ao ligar as colunas" widgetVar="dlgLigacaoD">
-                        <p:messages autoUpdate="true" closable="true" />
+                       <p:messages closable="true">
+                            <p:autoUpdate />
+                        </p:messages>
                         <h:dataTable value="#{controleImportacaoCSV.listaColulasPlanilha}" var="item3">
                             <p:column headerText="Associação de campos">
 

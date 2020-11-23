@@ -13,17 +13,17 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Leandro Laurindo
  */
-@ManagedBean(name = "controleLogin")
+@Named(value = "controleLogin")
 @SessionScoped
 public class Login implements Serializable {
 
@@ -48,7 +48,8 @@ public class Login implements Serializable {
         String jpql = "SELECT u FROM Usuario u WHERE u.login='"+login.toLowerCase().trim()+"' AND u.senha='"+senha.toLowerCase().trim()+"'";
         Usuario usuario = jpaController.carregarUsuario(jpql);
         if (usuario == null) {
-            Util.criarMensagemErro("Usuário não encontrado! - Erro no Login!");
+            Util.criarMensagemErro("Usuário não encontrado!");
+            Util.criarMensagemErro("Erro no Login!");
             return null;
         } else {
 

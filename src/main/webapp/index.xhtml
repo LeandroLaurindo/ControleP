@@ -26,7 +26,7 @@
             .frml{border-radius: 5px;}
             .ui-fieldset-legend{
                 background: #666666!important;
-                 color: white!important;
+                color: white!important;
             }
 
         </style>
@@ -44,7 +44,9 @@
                 <h:form>
 
                     <p:fieldset legend="Login" styleClass="frml">
-                        <p:messages autoUpdate="true" closable="true" />
+                        <p:messages closable="true">
+                            <p:autoUpdate />
+                        </p:messages>
                         <h:panelGrid columns="1">
                             <p:outputLabel for="usuario" value="Usuário:" />
                             <p:inputText value="#{controleLogin.login}" id="usuario" />

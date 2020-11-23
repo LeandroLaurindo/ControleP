@@ -7,16 +7,15 @@ package br.com.cblink.controlep.controlller;
 
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 
 
 /**
  *
  * @author Leandro Laurindo
  */
-@ManagedBean(name = "temaBean")
+@Named(value = "temaBean")
 @SessionScoped
 public class TemaBean implements Serializable {
     

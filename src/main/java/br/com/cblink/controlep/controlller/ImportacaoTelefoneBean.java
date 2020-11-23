@@ -31,19 +31,19 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.application.FacesMessage;;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import javax.servlet.ServletContext;
 import org.primefaces.event.FileUploadEvent;
 /**
  *
  * @author Leandro Laurindo
  */
-@ManagedBean
+@Named
 @ViewScoped
 public class ImportacaoTelefoneBean implements Serializable{
     private ImportacaoCsvJpaDAO csvJpaDAO = new ImportacaoCsvJpaDAO();
@@ -125,8 +125,8 @@ public class ImportacaoTelefoneBean implements Serializable{
                     }
 
                     Database.open(new File(caminho)).close();
-                    org.primefaces.context.RequestContext.getCurrentInstance().update("accessfm");
-                    org.primefaces.context.RequestContext.getCurrentInstance().execute("PF('access').show()");
+                    org.primefaces.PrimeFaces.current().ajax().update("accessfm");
+                    org.primefaces.PrimeFaces.current().executeScript("PF('access').show()");
                 } else {
                     try {
                         //System.out.println("aqui");
@@ -159,8 +159,8 @@ public class ImportacaoTelefoneBean implements Serializable{
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    org.primefaces.context.RequestContext.getCurrentInstance().update("form6");
-                    org.primefaces.context.RequestContext.getCurrentInstance().execute("PF('planilhaCamposAde').show()");
+                    org.primefaces.PrimeFaces.current().ajax().update("form6");
+                    org.primefaces.PrimeFaces.current().executeScript("PF('planilhaCamposAde').show()");
                 }
 
             } catch (IOException ex) {
@@ -225,10 +225,10 @@ public class ImportacaoTelefoneBean implements Serializable{
     public void refreshImport() {
         this.setColunas(null);
         this.setTipoArquivo(null);
-        org.primefaces.context.RequestContext.getCurrentInstance().update("Progr");
-        org.primefaces.context.RequestContext.getCurrentInstance().update("accessfm");
-        org.primefaces.context.RequestContext.getCurrentInstance().update("form6");
-        org.primefaces.context.RequestContext.getCurrentInstance().execute("PF('planilhaCamposConc').show()");
+        org.primefaces.PrimeFaces.current().ajax().update("Progr");
+        org.primefaces.PrimeFaces.current().ajax().update("accessfm");
+        org.primefaces.PrimeFaces.current().ajax().update("form6");
+        org.primefaces.PrimeFaces.current().executeScript("PF('planilhaCamposConc').show()");
     }
 
     public void leitorInsert() throws IOException, InterruptedException {
@@ -388,8 +388,8 @@ public class ImportacaoTelefoneBean implements Serializable{
                         FacesMessage message = new FacesMessage("Erro:" + e);
                         FacesContext.getCurrentInstance().addMessage("growltop", message);
 
-                        org.primefaces.context.RequestContext.getCurrentInstance().execute("PF('progresso').hide()");
-                        org.primefaces.context.RequestContext.getCurrentInstance().update("Tables");
+                        org.primefaces.PrimeFaces.current().executeScript("PF('progresso').hide()");
+                        org.primefaces.PrimeFaces.current().ajax().update("Tables");
                         progress = 0;
                         //break;
                     }
@@ -400,8 +400,8 @@ public class ImportacaoTelefoneBean implements Serializable{
         } catch (IndexOutOfBoundsException | HeadlessException e) {
             FacesMessage message = new FacesMessage("Linhas com benefício inexistente. Linhas sem número de benefício não serão inseridas na base");
             FacesContext.getCurrentInstance().addMessage(null, message);
-            org.primefaces.context.RequestContext.getCurrentInstance().execute("PF('progresso').hide()");
-            org.primefaces.context.RequestContext.getCurrentInstance().update("Tables");
+            org.primefaces.PrimeFaces.current().executeScript("PF('progresso').hide()");
+            org.primefaces.PrimeFaces.current().ajax().update("Tables");
             //System.out.println("forLeitor:" + e);
             progress = 0;
             e.printStackTrace();
@@ -422,7 +422,7 @@ public class ImportacaoTelefoneBean implements Serializable{
 
     public void startBar() {
         if (progress > 0) {
-            org.primefaces.context.RequestContext.getCurrentInstance().execute("PF('pbAjax').start()");
+            org.primefaces.PrimeFaces.current().executeScript("PF('pbAjax').start()");
         } else {
             //System.out.println("bp < zero");
         }

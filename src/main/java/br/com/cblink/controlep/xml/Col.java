@@ -6,13 +6,13 @@
 package br.com.cblink.controlep.xml;
 
 import java.io.Serializable;
-import javax.faces.bean.ManagedBean;
+import javax.inject.Named;
 
 /**
  *
  * @author ThiagoRabelo (61) 9 9935-1310
  */
-@ManagedBean(name = "col")
+@Named(value = "col")
 public class Col implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -26,9 +26,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import javax.servlet.ServletContext;
 import org.primefaces.model.UploadedFile;
 
@@ -36,7 +36,7 @@ import org.primefaces.model.UploadedFile;
  *
  * @author Leandro Laurindo
  */
-@ManagedBean(name = "controleImportacaoCSV")
+@Named(value = "controleImportacaoCSV")
 @ViewScoped
 public class ControleImportacaoCSV implements Serializable {
 

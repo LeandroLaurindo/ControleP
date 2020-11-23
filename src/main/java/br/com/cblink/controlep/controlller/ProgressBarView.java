@@ -11,15 +11,15 @@ package br.com.cblink.controlep.controlller;
  */
 
 import java.io.Serializable;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 
 /**
  *
  * @author Filipe
  */
 
-@ManagedBean
+@Named
 @SessionScoped
 public class ProgressBarView implements Serializable {
 
@@ -39,7 +39,7 @@ public class ProgressBarView implements Serializable {
 
     public void onComplete() {
         progress = 0;
-        org.primefaces.context.RequestContext.getCurrentInstance().update("Progr");
+        org.primefaces.PrimeFaces.current().ajax().update("Progr");
     }
 
     public void cancel() {

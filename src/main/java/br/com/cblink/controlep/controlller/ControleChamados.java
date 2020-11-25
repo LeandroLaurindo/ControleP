@@ -123,7 +123,7 @@ public class ControleChamados implements Serializable {
         if (chamados.getId() == null) {
             chamados.setDataInicio(new Date());
             chamados.setClientesId(cliente);
-            chamados.setDescricaoservico(chamados.getDescricaoservico().toUpperCase());
+            chamados.setDescricaoservicoNovo(chamados.getDescricaoservicoNovo().toUpperCase());
             if (jpaController.create(chamados)) {
                 Util.criarMensagemInfo("Salvo com sucesso!");
                 listar();
@@ -134,7 +134,7 @@ public class ControleChamados implements Serializable {
             }
         } else {
             chamados.setClientesId(cliente);
-            chamados.setDescricaoservico(chamados.getDescricaoservico().toUpperCase());
+            chamados.setDescricaoservicoNovo(chamados.getDescricaoservicoNovo().toUpperCase());
             if (jpaController.edit(chamados)) {
                 Util.criarMensagemInfo("Editado com sucesso!");
                 listar();
@@ -187,7 +187,12 @@ public class ControleChamados implements Serializable {
     }
 
     public void setartelefone() {
-        chamados.setTelefone(cliente.getTelefone());
+        if (cliente.getTelefone() != null) {
+            if (!cliente.getTelefone().isEmpty()) {
+                System.err.println(cliente.getTelefone());
+                chamados.setTelefone(cliente.getTelefone());
+            }
+        }
         Util.updateComponente("cadFrmCham");
         Util.chamarFuncaoJs("PF('dlgAtendimento').show()");
 

@@ -3,15 +3,15 @@
     <persistence-unit name="controlePU" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <class>br.com.cblink.controlep.entidades.Dids</class>
-        <class>br.com.cblink.controlep.entidades.Clientes</class>
         <class>br.com.cblink.controlep.entidades.Telefones</class>
-        <class>br.com.cblink.controlep.entidades.Chamadosatendidos</class>
         <class>br.com.cblink.controlep.entidades.Usuario</class>
         <class>br.com.cblink.controlep.entidades.Didsfsm</class>
+        <class>br.com.cblink.controlep.entidades.Clientes</class>
+        <class>br.com.cblink.controlep.entidades.Chamadosatendidos</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
-           <property name="javax.persistence.jdbc.url" value="jdbc:postgresql:///"/> -->
-          <!-- <property name="javax.persistence.jdbc.url" value="jdbc:postgresql:///"/> --> 
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql:///"/> -->
+            <!--<property name="javax.persistence.jdbc.url" value="jdbc:postgresql:///"/> -->
             <property name="javax.persistence.jdbc.user" value=""/>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="javax.persistence.jdbc.password" value=""/>

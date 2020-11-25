@@ -100,11 +100,11 @@ public class ChamadosJpaDAO implements Serializable {
             em.close();
         }
     }
-    
-    public List<Chamadosatendidos> listarAtendimentos( String jpql) {
-       EntityManager em = getEntityManager();
+
+    public List<Chamadosatendidos> listarAtendimentos(String jpql) {
+        EntityManager em = getEntityManager();
         try {
-            
+
             return em.createQuery(jpql).getResultList();
         } finally {
             em.close();
@@ -134,11 +134,20 @@ public class ChamadosJpaDAO implements Serializable {
             em.close();
         }
     }
-    
+
     public List<Chamadosatendidos> listarConfiltros(String jpql) {
         EntityManager em = getEntityManager();
         try {
-            return  em.createQuery(jpql).getResultList();
+            return em.createQuery(jpql).getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<String> listarTelefones(String jpql) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.createQuery(jpql).getResultList();
         } finally {
             em.close();
         }

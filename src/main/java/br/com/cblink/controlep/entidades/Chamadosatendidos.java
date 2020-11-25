@@ -20,7 +20,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -47,9 +46,7 @@ public class Chamadosatendidos implements Serializable {
     @Size(max = 50)
     @Column(name = "telefone")
     private String telefone;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 500)
+    @Size(max = 500)
     @Column(name = "descricaoservico")
     private String descricaoservico;
     @Column(name = "data_inicio")
@@ -58,6 +55,9 @@ public class Chamadosatendidos implements Serializable {
     @Column(name = "data_fim")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataFim;
+    @Size(max = 2147483647)
+    @Column(name = "descricaoservico_novo")
+    private String descricaoservicoNovo;
     @JoinColumn(name = "clientes_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Clientes clientesId;
@@ -67,11 +67,6 @@ public class Chamadosatendidos implements Serializable {
 
     public Chamadosatendidos(Integer id) {
         this.id = id;
-    }
-
-    public Chamadosatendidos(Integer id, String descricaoservico) {
-        this.id = id;
-        this.descricaoservico = descricaoservico;
     }
 
     public Integer getId() {
@@ -120,6 +115,14 @@ public class Chamadosatendidos implements Serializable {
 
     public void setDataFim(Date dataFim) {
         this.dataFim = dataFim;
+    }
+
+    public String getDescricaoservicoNovo() {
+        return descricaoservicoNovo;
+    }
+
+    public void setDescricaoservicoNovo(String descricaoservicoNovo) {
+        this.descricaoservicoNovo = descricaoservicoNovo;
     }
 
     public Clientes getClientesId() {

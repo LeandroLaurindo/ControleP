@@ -36,7 +36,7 @@
                             </h:panelGrid>
                             <h:panelGrid columns="1">
                                 <p:outputLabel value="Descrição do servico:" for="descricaoservico" />
-                                <p:editor id="descricaoservico" widgetVar="editorWidget" value="#{controleChamados.chamados.descricaoservico}" width="600" />
+                                <p:editor id="descricaoservico" widgetVar="editorWidget" value="#{controleChamados.chamados.descricaoservicoNovo}" width="600" />
                                 <p:commandButton value="Clear" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-closethick" />
                             </h:panelGrid>
 
@@ -80,7 +80,7 @@
                             <f:facet name="header">
                                 <h:outputText value="Descricao serviço" style="font-size: 10px!important;"/>
                             </f:facet>
-                            <p:commandButton value="" styleClass="botaoDetalhe" actionListener="#{controleChamados.setarDescricao(item.descricaoservico)}" 
+                            <p:commandButton value="" styleClass="botaoDetalhe" actionListener="#{controleChamados.setarDescricao(item.descricaoservicoNovo)}" 
                                              oncomplete="PF('dlgDescricao').show()" 
                                              icon="ui-icon-search" process="@this" title="Mostrar detalhes"/>
 

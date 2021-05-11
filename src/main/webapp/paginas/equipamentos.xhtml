@@ -1,0 +1,338 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layoutPadrao.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="equipamentos">
+        <p:panel header="Equipamentos">
+            <f:view>
+                <h:form>
+                    <p:messages closable="true">
+                        <p:autoUpdate />
+                    </p:messages>
+                </h:form>
+            </f:view>
+            <f:view>
+                <h:form id="frmCadEquipa">
+                    <p:dialog header="Dados do Equipamento" widgetVar="dlgCadEquipa" id="dlgCadEquipa" closable="true" position="350,200">
+                        <h:panelGrid columns="2">
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Nome:" for="nome" />
+                                <p:inputText id="nome" value="#{controleCadEquipamentos.cadEquipamentos.nome}" title="Nome" style="width: 350px!important;" onkeyup="value = value.toUpperCase()"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Modelo Equipamento:" for="modelo" />
+                                <p:inputText id="modelo" value="#{controleCadEquipamentos.cadEquipamentos.modelo}" title="Modelo" style="width: 350px!important;" onkeyup="value = value.toUpperCase()"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Ip Equipamento:" for="ipEquipamento" />
+                                <p:inputText id="ipEquipamento" value="#{controleCadEquipamentos.cadEquipamentos.ipEquipamento}" title="IpEquipamento" style="width: 350px!important;"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Fabricante:" for="fabricante" />
+                                <p:inputText id="fabricante" value="#{controleCadEquipamentos.cadEquipamentos.fabricante}" title="Fabricante" style="width: 350px!important;" onkeyup="value = value.toUpperCase()"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Local:" for="local" />
+                                <p:inputText id="local" value="#{controleCadEquipamentos.cadEquipamentos.local}" title="Local" style="width: 350px!important;" onkeyup="value = value.toUpperCase()"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Cliente:" for="codCliente" />
+                                <p:selectOneMenu id="codCliente" value="#{controleCadEquipamentos.cadEquipamentos.codCliente}" required="true" requiredMessage="O Clientes é obrigatório."
+                                                 filter="true" filterMatchMode="contains" panelStyle="width:350px" style="float: left; width: 350px!important;" >
+                                    <f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true" />
+                                    <f:selectItems value="#{controleCadEquipamentos.listaClientes}" var="cli" itemLabel="#{cli.nome}" itemValue="#{cli.id}"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Fornecedor:" for="idfornecedord" />
+                                <p:selectOneMenu id="idfornecedord" value="#{controleCadEquipamentos.cadEquipamentos.idFornecedor}" required="true" requiredMessage="O fornecedor é obrigatório."
+                                                 filter="true" filterMatchMode="contains" panelStyle="width:350px" style="float: left; width: 350px!important;">
+                                    <f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true" />
+                                    <f:selectItems value="#{controleCadEquipamentos.listaFornecedores}" var="fornec" itemLabel="#{fornec.nome}" itemValue="#{fornec.idFornecedor}"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+                            <p:spacer width="40" />
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Observações" for="observacoes" />
+                            <p:textEditor widgetVar="editorWidgetx" id="observacoes" value="#{controleCadEquipamentos.cadEquipamentos.observacoes}" height="250"  />
+                            <p:commandButton value="Limpar" type="button" onclick="PF('editorWidgetx').clear();" icon="ui-icon-closethick" />
+                        </h:panelGrid>
+
+                        <br />
+                        <p:commandButton value="Salvar" styleClass="botao" icon="ui-icon-disk" actionListener="#{controleCadEquipamentos.salvar()}" style="float: right;"/>
+                        <p:commandButton value="Fechar" styleClass="botao" icon="ui-icon-cancel" onclick="PF('dlgCadEquipa').hide()" process="@this" style="float: right;"/>
+
+                    </p:dialog>
+                </h:form>
+            </f:view>
+
+            <f:view>
+                <h:form id="frmCadEquipaD">
+                    <p:dialog header="Dados do Equipamento" widgetVar="dlgCadEquipaD" id="dlgCadEquipaD" closable="true" position="350,200">
+                        <h:panelGrid columns="2">
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Nome:" for="nomeD" />
+                                <p:inputText id="nomeD" value="#{controleCadEquipamentos.cadEquipamentos.nome}" title="Nome" style="width: 350px!important;" onkeyup="value = value.toUpperCase()" readonly="true"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Modelo Equipamento:" for="modeloD" />
+                                <p:inputText id="modeloD" value="#{controleCadEquipamentos.cadEquipamentos.modelo}" title="Modelo" style="width: 350px!important;" onkeyup="value = value.toUpperCase()" readonly="true"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Ip Equipamento:" for="ipEquipamentoD" />
+                                <p:inputText id="ipEquipamentoD" value="#{controleCadEquipamentos.cadEquipamentos.ipEquipamento}" title="IpEquipamento" style="width: 350px!important;" readonly="true"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Fabricante:" for="fabricanteD" />
+                                <p:inputText id="fabricanteD" value="#{controleCadEquipamentos.cadEquipamentos.fabricante}" title="Fabricante" style="width: 350px!important;" onkeyup="value = value.toUpperCase()" readonly="true"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Local:" for="localD" />
+                                <p:inputText id="localD" value="#{controleCadEquipamentos.cadEquipamentos.local}" title="Local" style="width: 350px!important;" onkeyup="value = value.toUpperCase()" readonly="true"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="2">
+                                <h:panelGrid columns="1">
+                                    <p:outputLabel value="Cliente:" for="codClienteD" />
+                                    <p:selectOneMenu id="codClienteD" value="#{controleCadEquipamentos.cadEquipamentos.codCliente}"
+                                                     filter="true" filterMatchMode="contains" panelStyle="width:350px" style="float: left; width: 350px!important;" disabled="true">
+                                        <f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true" />
+                                        <f:selectItems value="#{controleCadEquipamentos.listaClientes}" var="cliD" itemLabel="#{cliD.nome}" itemValue="#{cliD.id}" />
+                                    </p:selectOneMenu>
+                                </h:panelGrid>
+                                <h:panelGrid columns="1">
+                                     <p:spacer width="20" />
+                                    <p:commandButton value="" styleClass="botaoIcones" icon="ui-icon-search" actionListener="#{controleCadEquipamentos.mostrarCliente(controleCadEquipamentos.cadEquipamentos)}" process="@this"/>
+                                </h:panelGrid>
+                            </h:panelGrid>
+                            <h:panelGrid columns="2">
+                                <h:panelGrid columns="1">
+                                    <p:outputLabel value="Fornecedor:" for="idfornecedordD" />
+                                    <p:selectOneMenu id="idfornecedordD" value="#{controleCadEquipamentos.cadEquipamentos.idFornecedor}" required="true" requiredMessage="O fornecedor é obrigatório."
+                                                     filter="true" filterMatchMode="contains" panelStyle="width:350px" style="float: left; width: 350px!important;" disabled="true">
+                                        <f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true" />
+                                        <f:selectItems value="#{controleCadEquipamentos.listaFornecedores}" var="fornecD" itemLabel="#{fornecD.nome}" itemValue="#{fornecD.idFornecedor}"/>
+                                    </p:selectOneMenu>
+                                </h:panelGrid>
+                                <h:panelGrid columns="1">
+                                    <p:spacer width="20" />
+                                    <p:commandButton value="" styleClass="botaoIcones" icon="ui-icon-search" actionListener="#{controleCadEquipamentos.mostrarFornecedor(controleCadEquipamentos.cadEquipamentos)}" process="@this"/>    
+                                </h:panelGrid>
+                            </h:panelGrid>
+                            <p:spacer width="40" />
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Observações" for="observacoesD" />
+                            <p:textEditor widgetVar="editorWidgetxD" id="observacoesD" value="#{controleCadEquipamentos.cadEquipamentos.observacoes}" height="250"  readonly="true"/>
+                        </h:panelGrid>
+
+                        <br />
+                        <p:commandButton value="Fechar" styleClass="botao" icon="ui-icon-cancel" onclick="PF('dlgCadEquipaD').hide()" process="@this" style="float: right;"/>
+
+                    </p:dialog>
+                </h:form>
+            </f:view>
+
+            <f:view>
+                <h:form id="frmTableEquimentos">
+                    <p:dataTable value="#{controleCadEquipamentos.listaEquipamentos}" var="itemx" widgetVar="pausaTablex" paginator="true"
+                                 emptyMessage="Nenhum equipamento encontrado!" currentPageReportTemplate="(Pag.{currentPage}/{totalPages} - {totalRecords} registros)"
+                                 rows="10" rowsPerPageTemplate="10,20,40,#{controleCadEquipamentos.listaEquipamentos.size()}" sortBy="#{itemx.nome}">
+                        <f:facet name="header">
+                            <p:commandButton value="Novo equipamento" styleClass="botao"  actionListener="#{controleCadEquipamentos.novo() }" update="frmCadEquipa" icon="ui-icon-plus" style="float: right; margin-right: 20px;" oncomplete="PF('dlgCadEquipa').show();"/>
+                            <h3>Lista de Equipamentos</h3>
+                        </f:facet>
+                        <p:column filterBy="#{itemx.nome}" filterMatchMode="contains" width="30%">
+                            <f:facet name="header">
+                                <h:outputText value="Nome"/>
+                            </f:facet>
+                            <h:outputText value="#{itemx.nome}"/>
+                        </p:column>
+                        <p:column width="100">
+                            <f:facet name="header">
+                                <h:outputText value="Modelo"/>
+                            </f:facet>
+                            <h:outputText value="#{itemx.modelo}"/>
+                        </p:column>
+                        <p:column width="150">
+                            <f:facet name="header">
+                                <h:outputText value="IP Equipamento"/>
+                            </f:facet>
+                            <h:outputText value="#{itemx.ipEquipamento}"/>
+                        </p:column>
+
+                        <p:column width="50">
+                            <f:facet name="header">
+                                <h:outputText value="Ação"/>
+                            </f:facet>
+                            <p:commandButton value="" styleClass="botaoIcones" icon="ui-icon-search" actionListener="#{controleCadEquipamentos.setar(itemx)}" process="@this" update="frmCadEquipaD" oncomplete="PF('dlgCadEquipaD').show();"  title="Detalhes" />
+                            <p:commandButton value="" styleClass="botaoIcones" icon="ui-icon-pencil" actionListener="#{controleCadEquipamentos.setar(itemx)}" process="@this" update="frmCadEquipa" oncomplete="PF('dlgCadEquipa').show();"  title="Editar" />
+                            <p:commandButton value="" styleClass="botaoIcones" icon="ui-icon-trash" action="#{controleCadEquipamentos.deletar(itemx)}"  process="@this" title="Excluir" >
+                                <p:confirm header="Atenção" message="Tem certeza deseja remover?" />
+                            </p:commandButton>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade"  width="250">
+                                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-flat botao" icon="ui-icon-cancel" style="width: 100px;"/>
+                                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes botao" icon="ui-icon-check" style="width: 100px;"/>
+                            </p:confirmDialog>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </f:view>
+            <f:view>
+                <h:form id="frmMfabricante">
+                    <p:dialog header="Fabricante" widgetVar="dlgMfabricante" id="dlgMfabricante" closable="true">
+                        <h:outputText value="#{controleCadEquipamentos.cadEquipamentos.fabricante}" id="mfab" />
+                        <br />
+                        <p:commandButton value="Fechar" styleClass="botao" icon="ui-icon-cancel" onclick="PF('dlgMfabricante').hide()" process="@this" style="float: right;"/>
+                    </p:dialog>
+                </h:form>
+            </f:view>
+
+            <f:view>
+                <h:form id="frmMFonecedor">
+                    <p:dialog header="Dados do Fornecedor" widgetVar="dlgMFonecedor" id="dlgMFonecedor" closable="true" position="350,150" style="max-width: 80%!important; max-height: 80%!important; overflow:auto;" >
+
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Nome:" for="nome1" />
+                            <p:inputText id="nome1" value="#{controleCadEquipamentos.cadFornecedor.nome}" title="Nome" required="true" readonly="true"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Cpf/Cpnp:" for="documentoUmx" />
+                            <p:inputText id="documentoUmx" value="#{controleCadEquipamentos.cadFornecedor.documentoUm}" title="DocumentoUm"  readonly="true"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="RG/Insc Est:" for="documentoDoisx" />
+                            <p:inputText id="documentoDoisx" value="#{controleCadEquipamentos.cadFornecedor.documentoDois}" title="DocumentoDois"  readonly="true"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Endereco:" for="enderecox" />
+                            <p:inputText id="enderecox" value="#{controleCadEquipamentos.cadFornecedor.endereco}" title="Endereco"  readonly="true"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Numero:" for="numerox" />
+                            <p:inputText id="numerox" value="#{controleCadEquipamentos.cadFornecedor.numero}" title="Numero"  readonly="true" />
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Bairro:" for="bairrox" />
+                            <p:inputText id="bairrox" value="#{controleCadEquipamentos.cadFornecedor.bairro}" title="Bairro"  readonly="true"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Cidade:" for="cidadex" />
+                            <p:inputText id="cidadex" value="#{controleCadEquipamentos.cadFornecedor.cidade}" title="Cidade"  readonly="true"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Uf:" for="ufx" />
+                            <p:inputText id="ufx" value="#{controleCadEquipamentos.cadFornecedor.uf}" title="Uf"  readonly="true"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Cep:" for="cepx" />
+                            <p:inputText id="cepx" value="#{controleCadEquipamentos.cadFornecedor.cep}" title="Cep"  readonly="true"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Pais:" for="paisx" />
+                            <p:inputText id="paisx" value="#{controleCadEquipamentos.cadFornecedor.pais}" title="Pais"  readonly="true"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Contato:" for="contatox" />
+                            <p:inputText id="contatox" value="#{controleCadEquipamentos.cadFornecedor.contato}" title="Contato"  readonly="true"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Email:" for="emailx" />
+                            <p:inputText id="emailx" value="#{controleCadEquipamentos.cadFornecedor.email}" title="Email" type="email" readonly="true"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Telefone Um:" for="telefoneUmx" />
+                            <p:inputText id="telefoneUmx" value="#{controleCadEquipamentos.cadFornecedor.telefoneUm}" styleClass="telefone" title="TelefoneUm"  type="fone" readonly="true"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Telefone Dois:" for="telefoneDoisx" />
+                            <p:inputText id="telefoneDoisx" value="#{controleCadEquipamentos.cadFornecedor.telefoneDois}" styleClass="telefone" title="TelefoneDois" type="fone" readonly="true"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Informações adicionais" for="adicionaisx" />
+                            <p:textEditor widgetVar="editorOb" id="adicionaisx" value="#{controleCadEquipamentos.cadFornecedor.observacao}" height="250" readonly="true"/>
+                        </h:panelGrid>
+                        <p:commandButton value="Fechar" styleClass="botao" icon="ui-icon-cancel" onclick="PF('dlgMFonecedor').hide()" process="@this" style="float: right;"/>
+                    </p:dialog>
+                </h:form>
+            </f:view>
+
+            <f:view>
+                <h:form id="frmMcliente">
+                    <p:dialog header="Dados do Cliente" widgetVar="dlgMcliente" id="dlgMcliente" closable="true" position="350, 250">
+                        <h:panelGrid columns="3">
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Nome:" for="nome1x" />
+                                <p:inputText id="nome1x" value="#{controleCadEquipamentos.clientes.nome}"  onkeyup="value = value.toUpperCase()" title="Nome" readonly="true"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="CpfCnpj:" for="cpfCnpj1x" />
+                                <p:inputText id="cpfCnpj1x" value="#{controleCadEquipamentos.clientes.cpfCnpj}" title="CpfCnpj" readonly="true"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Telefone:" for="telefone1x" />
+                                <p:inputText id="telefone1x" value="#{controleCadEquipamentos.clientes.telefone}" title="Telefone" readonly="true"/>
+                            </h:panelGrid>
+                        </h:panelGrid>
+                        <h:panelGrid columns="3">
+
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Endereço" for="endereco1x" />
+                                <p:inputText id="endereco1x" value="#{controleCadEquipamentos.clientes.endereco}" size="50" title="endereco" readonly="true"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Numero" for="numero1x" />
+                                <p:inputText id="numero1x" value="#{controleCadEquipamentos.clientes.numero}" title="endereco" readonly="true"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Login:" for="login1x" />
+                                <p:inputText id="login1x" value="#{controleCadEquipamentos.clientes.login}" title="login" readonly="true"/>
+                            </h:panelGrid>  
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Plataforma" for="plataforma1x" />
+                            <p:inputText id="plataforma1x" value="#{controleCadEquipamentos.clientes.plataforma}" title="plataforma" readonly="true"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Informações adicionais" for="adicionais1x" />
+                            <p:textEditor widgetVar="editor1" id="adicionais1x" value="#{controleCadEquipamentos.clientes.observacao}"  height="250" readonly="true" />
+                        </h:panelGrid>
+                        <p:commandButton value="Fechar" styleClass="botao" icon="ui-icon-cancel" onclick="PF('dlgMcliente').hide()" process="@this" />
+                    </p:dialog>
+                </h:form>
+            </f:view>
+
+            <f:view>
+                <h:form id="frmObsx">
+                    <p:dialog widgetVar="dlgObsx" id="dlgObsx" header="Dados da observação" closable="true" position="350, 250">
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Informações adicionais" for="adicionais1x" />
+                            <p:textEditor widgetVar="editorOb1x" id="adicionais1x" value="#{controleCadEquipamentos.cadEquipamentos.observacoes}" height="450"  />
+                        </h:panelGrid>
+                    </p:dialog>
+                </h:form>
+            </f:view>
+            <f:view>
+                <h:form id="frmObsxEditar">
+                    <p:dialog widgetVar="dlgObsxEditar" id="dlgObsxEditar" header="Dados da observação" closable="true" position="350, 250">
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Informações adicionais" for="adicionais1xEditar" />
+                            <p:textEditor widgetVar="editorOb1xEditar" id="adicionais1xEditar" value="#{controleCadEquipamentos.cadEquipamentos.observacoes}" height="450"  />
+                        </h:panelGrid>
+                        <p:commandButton value="Salvar" icon="ui-icom-refresh" styleClass="botao" actionListener="#{controleCadEquipamentos.salvar()}" oncomplete="PF('dlgObsxEditar').hide();" style="float: right;"/>
+                        <p:commandButton value="Fechar" styleClass="botao" icon="ui-icon-cancel" onclick="PF('dlgObsxEditar').hide();" process="@this"  style="float: right;"/>
+                    </p:dialog>
+                </h:form>
+            </f:view>
+
+        </p:panel>
+    </ui:define>
+
+</ui:composition>

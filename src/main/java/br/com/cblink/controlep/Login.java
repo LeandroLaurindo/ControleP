@@ -36,7 +36,7 @@ public class Login implements Serializable {
     private Integer nivel;
 
     private Boolean usuarioLogado;
-    
+
     private Date dataH;
 
     @PostConstruct
@@ -45,19 +45,26 @@ public class Login implements Serializable {
     }
 
     public String logar() {
-        String jpql = "SELECT u FROM Usuario u WHERE u.login='"+login.toLowerCase().trim()+"' AND u.senha='"+senha.toLowerCase().trim()+"'";
+        String jpql = "SELECT u FROM Usuario u WHERE u.login='" + login.toLowerCase().trim() + "'";
         Usuario usuario = jpaController.carregarUsuario(jpql);
         if (usuario == null) {
             Util.criarMensagemErro("Usuário não encontrado!");
             Util.criarMensagemErro("Erro no Login!");
             return null;
         } else {
-
-            FacesContext fc = FacesContext.getCurrentInstance();
-            ExternalContext ec = fc.getExternalContext();
-            HttpSession session = (HttpSession) ec.getSession(false);
-            session.setAttribute("logado", true);
-            return "/paginas/home.xhtml?faces-redirect=true";
+            String s = String.valueOf(senha);
+            if (Util.checkPass(s.toLowerCase().trim(), usuario.getSenha().trim())) {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                ExternalContext ec = fc.getExternalContext();
+                HttpSession session = (HttpSession) ec.getSession(false);
+                session.setAttribute("logado", true);
+                session.setAttribute("userName", usuario.getLogin());
+                return "/paginas/home.xhtml?faces-redirect=true";
+            } else {
+                Util.criarMensagemErro("Senha informada não confere!");
+                Util.criarMensagemErro("Erro no Login!");
+                return null;
+            }
         }
     }
 
@@ -109,8 +116,6 @@ public class Login implements Serializable {
         this.nivel = nivel;
     }
 
-   
-
     public Boolean getUsuarioLogado() {
         return usuarioLogado;
     }
@@ -126,5 +131,5 @@ public class Login implements Serializable {
     public void setDataH(Date dataH) {
         this.dataH = dataH;
     }
-  
+
 }

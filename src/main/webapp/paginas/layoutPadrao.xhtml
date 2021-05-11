@@ -12,14 +12,14 @@
                 <title>ControleP</title>
                 <h:outputScript library="js" name="traducao.js" />
                 <link rel="shortcut icon" type="image/x-icon" href="#{resource['imgs/favicon.ico']}"/>
-               <style type="text/css">
+                <style type="text/css">
                     .botao:hover{background: #ffffff!important;}
                     .botao:hover .ui-button-text{color: #0099ff;}
                     .botaoIcones{width: 25px; height: 20px; padding: 5px; margin-right: 5px;}
                     .botaoDetalhe{width: 30px; height: 20px; padding: 5px;}
                     .botaoIcones:hover{width: 35px; height: 25px;}
                     .botaoDetalhe:hover{width: 35px; height: 25px;}
-             
+
                 </style>
             </f:facet>
         </h:head>
@@ -70,14 +70,15 @@
                         <p:menu>
                             <p:submenu label="Menus">
                                 <p:menuitem value="Atendimentos " action="#{ControlerNavegacao.controleChmados()}" ajax="false" />
-                                <p:menuitem value="Usuários " action="#{ControlerNavegacao.cadastroUsuario()}" ajax="false" />
                                 <p:menuitem value="Clientes" action="#{ControlerNavegacao.clientes()}" ajax="false" />
+                                <p:menuitem value="Equipamentos" action="#{ControlerNavegacao.equipamentos()}" ajax="false" />
+                                <p:menuitem value="Fornecedores" action="#{ControlerNavegacao.fornecedores()}" ajax="false" />
+                                <p:menuitem value="Gerar Arquivo" action="#{ControlerNavegacao.gerar()}" ajax="false" />
                                 <p:menuitem value="Importar Clientes" action="#{ControlerNavegacao.importacaoClientes()}" ajax="false" />
                                 <p:menuitem value="Importar Dids" actionListener="${importacaoBean.startBar}" action="#{ControlerNavegacao.importar()}" ajax="false" />
                                 <p:menuitem value="Importar DidsFsm " actionListener="${importacaoBean.startBar}" action="#{ControlerNavegacao.importarDidsFsm()}" ajax="false" />
                                 <p:menuitem value="Importar Telefones " actionListener="${importacaoBean.startBar}" action="#{ControlerNavegacao.importarTelefones()}" ajax="false" />
-                                <p:menuitem value="Gerar Arquivo" action="#{ControlerNavegacao.gerar()}" ajax="false" />
-
+                                <p:menuitem value="Usuários " action="#{ControlerNavegacao.cadastroUsuario()}" ajax="false" />
                             </p:submenu>
 
                         </p:menu>
@@ -102,6 +103,8 @@
                     <ui:insert name="inportaArquivoDidsFsm" />
                     <ui:insert name="inportaClientes" />
                     <ui:insert name="inportaTelefones" />
+                    <ui:insert name="equipamentos" />
+                    <ui:insert name="fornecedor" />
                 </p:layoutUnit>
 
             </p:layout>

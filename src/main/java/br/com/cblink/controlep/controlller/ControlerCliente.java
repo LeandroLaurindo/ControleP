@@ -51,7 +51,7 @@ public class ControlerCliente implements Serializable {
                 Util.criarMensagemInfo("Salvo com sucesso!");
                 listar();
                 clientes = new Clientes();
-                Util.updateComponente("cadCli");
+                Util.updateComponente("formTbClientes");
             } else {
                 Util.criarMensagemErro("Erro não foi possivel salvar!");
             }
@@ -60,7 +60,7 @@ public class ControlerCliente implements Serializable {
                 Util.criarMensagemInfo("Editado com sucesso!");
                 listar();
                 clientes = new Clientes();
-                Util.updateComponente("cadCli");
+                Util.updateComponente("formTbClientes");
             } else {
                 Util.criarMensagemErro("Erro não foi possivel salvar!");
             }
@@ -81,6 +81,8 @@ public class ControlerCliente implements Serializable {
             Util.criarMensagemErro("Erro: não foi possivel remover!");
         }
     }
+    
+   
 
     public void novoCliente() {
         clientes = new Clientes();
@@ -90,6 +92,12 @@ public class ControlerCliente implements Serializable {
     public void setarClienteEditar(Clientes usu) {
         clientes = usu;
         Util.updateComponente("cadCli");
+    }
+    
+     public void setarClienteDetalhes(Clientes usu) {
+        clientes = usu;
+        Util.updateComponente("formD");
+        Util.chamarFuncaoJs("PF('dlgD').show()");
     }
 
     public void setarClienteRemover(Clientes usu) {

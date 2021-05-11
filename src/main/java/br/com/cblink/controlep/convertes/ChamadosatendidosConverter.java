@@ -6,7 +6,6 @@
 package br.com.cblink.controlep.convertes;
 
 import java.util.List;
-import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItem;
 import javax.faces.component.UISelectItems;

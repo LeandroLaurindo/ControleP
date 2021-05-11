@@ -34,6 +34,16 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Clientes.findAll", query = "SELECT c FROM Clientes c")})
 public class Clientes implements Serializable {
 
+    @Size(max = 200)
+    @Column(name = "endereco")
+    private String endereco;
+    @Size(max = 20)
+    @Column(name = "numero")
+    private String numero;
+    @Size(max = 2147483647)
+    @Column(name = "observacao")
+    private String observacao;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -152,6 +162,30 @@ public class Clientes implements Serializable {
     @Override
     public String toString() {
         return "br.com.cblink.controlep.entidades.Clientes[ id=" + id + " ]";
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public String getObservacao() {
+        return observacao;
+    }
+
+    public void setObservacao(String observacao) {
+        this.observacao = observacao;
     }
     
 }

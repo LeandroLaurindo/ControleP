@@ -1,0 +1,290 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layoutPadrao.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <script type="text/javascript">
+        /* Máscaras ER */
+        function mascara(o, f) {
+            v_obj = o;
+            v_fun = f;
+            setTimeout("execmascara()", 1);
+        }
+        function execmascara() {
+            v_obj.value = v_fun(v_obj.value);
+        }
+        function mtel(v) {
+            v = v.replace(/D/g, "");             //Remove tudo o que não é dígito
+            v = v.replace(/^(d{2})(d)/g, "($1) $2"); //Coloca parênteses em volta dos dois primeiros dígitos
+            v = v.replace(/(d)(d{4})$/, "$1-$2");    //Coloca hífen entre o quarto e o quinto dígitos
+            return v;
+        }
+        function id(el) {
+            return document.getElementById(el);
+        }
+        window.onload = function () {
+            id('telefone').onkeypress = function () {
+                mascara(this, mtel);
+            };
+        }
+        }
+
+
+    </script>
+
+    <ui:define name="fornecedor">
+        <p:panel header="Equipamentos">
+            <f:view>
+                <h:form>
+                    <p:messages closable="true">
+                        <p:autoUpdate />
+                    </p:messages>
+                </h:form>
+            </f:view>
+            <f:view>
+
+
+                <h:form id="frmCadForne">
+                    <p:dialog widgetVar="dlgCadForne" id="dlgCadForne" closable="true" position="350,240" header="Dados Fornecedor">
+                        <h:panelGrid columns="3">
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Nome:" for="nome" />
+                                <p:inputText id="nome" value="#{controleCadFornecedor.cadFornecedor.nome}" title="Nome" required="true" requiredMessage="Nome é obrigatório." size="50"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Cpf/Cpnp:" for="documentoUm" />
+                                <p:inputText id="documentoUm" value="#{controleCadFornecedor.cadFornecedor.documentoUm}" title="DocumentoUm" />
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="RG/Insc Est:" for="documentoDois" />
+                                <p:inputText id="documentoDois" value="#{controleCadFornecedor.cadFornecedor.documentoDois}" title="DocumentoDois" />
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Endereco:" for="endereco" />
+                                <p:inputText id="endereco" value="#{controleCadFornecedor.cadFornecedor.endereco}" title="Endereco" size="50"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Numero:" for="numero" />
+                                <p:inputText id="numero" value="#{controleCadFornecedor.cadFornecedor.numero}" title="Numero" />
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Bairro:" for="bairro" />
+                                <p:inputText id="bairro" value="#{controleCadFornecedor.cadFornecedor.bairro}" title="Bairro" />
+                            </h:panelGrid>
+                            <h:panelGrid columns="2">
+                                <h:panelGrid columns="1">
+                                    <p:outputLabel value="Cidade:" for="cidade" />
+                                    <p:inputText id="cidade" value="#{controleCadFornecedor.cadFornecedor.cidade}" title="Cidade" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="1">
+                                    <p:outputLabel value="Uf:" for="ufg" />
+                                    <p:selectOneMenu id="ufg" value="#{controleCadFornecedor.cadFornecedor.uf}" 
+                                                 filter="true" filterMatchMode="contains" panelStyle="width:230px" style="float: left; width: 230px!important;">
+                                    <f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true" />
+                                    <f:selectItems value="#{estadosBr.lista}" var="estax" itemLabel="#{estax.nome}" itemValue="#{estax.sigla}"/>
+                                </p:selectOneMenu>
+                                </h:panelGrid>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Cep:" for="cep" />
+                                <p:inputMask id="cep" value="#{controleCadFornecedor.cadFornecedor.cep}" title="Cep" mask="99999-999"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Pais:" for="pais" />
+                                <p:inputText id="pais" value="#{controleCadFornecedor.cadFornecedor.pais}" title="Pais" />
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Contato:" for="contato" />
+                                <p:inputText id="contato" value="#{controleCadFornecedor.cadFornecedor.contato}" title="Contato" />
+                            </h:panelGrid>
+                            <p:spacer width="40" />
+                            <p:spacer width="40" />
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Email:" for="email" />
+                                <p:inputText id="email" value="#{controleCadFornecedor.cadFornecedor.email}" title="Email" type="email" size="50"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Telefone Um:" for="telefoneUm" />
+                                <p:inputText id="telefoneUm" value="#{controleCadFornecedor.cadFornecedor.telefoneUm}" styleClass="telefone" title="TelefoneUm"  type="fone"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Telefone Dois:" for="telefoneDois" />
+                                <p:inputText id="telefoneDois" value="#{controleCadFornecedor.cadFornecedor.telefoneDois}" styleClass="telefone" title="TelefoneDois" type="fone"/>
+                            </h:panelGrid>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Informações adicionais" for="adicionais" />
+                            <p:textEditor widgetVar="editorOb" id="adicionais" value="#{controleCadFornecedor.cadFornecedor.observacao}" height="250"  />
+                        </h:panelGrid>
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Salvar" styleClass="botao"  actionListener="#{controleCadFornecedor.salvar()}" icon="ui-icon-disk" />
+                            <p:commandButton value="Fechar" styleClass="botao" icon="ui-icon-cancel" onclick="PF('frmCadForne').hide();" process="@this" />
+                        </h:panelGrid>
+                    </p:dialog>
+                </h:form>
+            </f:view>
+            <f:view>
+
+
+                <h:form id="formtableForne">
+
+                    <p:dataTable value="#{controleCadFornecedor.listaFornecedores}" var="item"   
+                                 filteredValue="#{controleCadFornecedor.listaFornecedoresFiltro}" widgetVar="pausaTable6" paginator="true"
+                                 emptyMessage="Nenhum fornecedor encontrado!" currentPageReportTemplate="(Pag. {currentPage}/{totalPages} - {totalRecords} registros)"
+                                 rows="10" rowsPerPageTemplate="5,10,15,#{controleCadFornecedor.listaFornecedoresFiltro.size()}"
+                                 sortBy="#{item.nome}">
+                        <f:facet name="header">
+                            <p:commandButton value="Novo Fornecedor" styleClass="botao" actionListener="#{controleCadFornecedor.novo()}" update="frmCadForne" oncomplete="PF('dlgCadForne').show()" icon="ui-icon-plus" style="float: right; margin-right: 20px;"/>
+                            <p:outputPanel style="float: right; margin-right: 20px;">
+                                <h:outputText value="Pesquise em todos os campos:" />
+                                <h:inputText id="globalFilter" onkeyup="PF('pausaTable5').filter()" />
+                            </p:outputPanel>
+                            <h3>Lista de Fornecedores</h3>
+                        </f:facet>
+                        <p:column filterBy="#{item.nome}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Nome"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nome}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.documentoUm}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Cpf/Cnpj"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoUm}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Contato"/>
+                            </f:facet>
+                            <p:commandButton value="" styleClass="botaoIcones" icon="ui-icon-search" actionListener="#{controleCadFornecedor.setarDetalhes(item)}"  process="@this" update="forContatoForn" oncomplete="PF('dlgContatoForne').show();" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Endereço"/>
+                            </f:facet>
+                            <p:commandButton value="" styleClass="botaoIcones" icon="ui-icon-search" actionListener="#{controleCadFornecedor.setarDetalhes(item)}"  process="@this" update="forEnderecoForn" oncomplete="PF('dlgEForne').show();"/> 
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Observações"/>
+                            </f:facet>
+                            <p:commandButton value="" styleClass="botaoIcones" icon="ui-icon-search" actionListener="#{controleCadFornecedor.setar(item)}"  process="@this" update="frmObs" oncomplete="PF('dlgObs').show();"/> 
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Ação"/>
+                            </f:facet>
+                            <p:commandButton value="" styleClass="botaoIcones" icon="ui-icon-pencil" actionListener="#{controleCadFornecedor.setar(item)}" process="@this" update="frmCadForne" oncomplete="PF('dlgCadForne').show();" />
+                            <p:commandButton value="" styleClass="botaoIcones" icon="ui-icon-trash" action="#{controleCadFornecedor.deletar(item)}"  process="@this" >
+                                <p:confirm header="Atenção" message="Tem certeza deseja remover?" />
+                            </p:commandButton>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade"  width="250">
+                                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-flat botao" icon="ui-icon-cancel" style="width: 100px;"/>
+                                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes botao" icon="ui-icon-check" style="width: 100px;"/>
+                            </p:confirmDialog>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </f:view>
+            <f:view>
+                <h:form id="forEnderecoForn">
+                    <p:dialog header="Endereços" id="dlgEForne" widgetVar="dlgEForne" closable="true" width="80%">
+                        <p:dataTable value="#{controleCadFornecedor.listaDetalhes}" var="itemDeatahles" emptyMessage="Não tem endereços para exibir!">
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Endereco"/>
+                                </f:facet>
+                                <h:outputText value="#{itemDeatahles.endereco}"/>
+                            </p:column>
+                            <p:column width="100">
+                                <f:facet name="header">
+                                    <h:outputText value="Numero"/>
+                                </f:facet>
+                                <h:outputText value="#{itemDeatahles.numero}"/>
+                            </p:column>
+                            <p:column width="300">
+                                <f:facet name="header">
+                                    <h:outputText value="Bairro"/>
+                                </f:facet>
+                                <h:outputText value="#{itemDeatahles.bairro}"/>
+                            </p:column>
+                            <p:column width="300">
+                                <f:facet name="header">
+                                    <h:outputText value="Cidade"/>
+                                </f:facet>
+                                <h:outputText value="#{itemDeatahles.cidade}"/>
+                            </p:column>
+                            <p:column width="100">
+                                <f:facet name="header">
+                                    <h:outputText value="CEP"/>
+                                </f:facet>
+                                <h:outputText value="#{itemDeatahles.cep}"/>
+                            </p:column>
+                            <p:column width="50">
+                                <f:facet name="header">
+                                    <h:outputText value="UF"/>
+                                </f:facet>
+                                <h:outputText value="#{itemDeatahles.uf}"/>
+                            </p:column>
+                            <p:column width="50">
+                                <f:facet name="header">
+                                    <h:outputText value="Pais"/>
+                                </f:facet>
+                                <h:outputText value="#{itemDeatahles.pais}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:dialog>
+                </h:form>
+            </f:view>
+            <f:view>
+                <h:form id="forContatoForn">
+                    <p:dialog header="Contato" id="dlgContatoForne" widgetVar="dlgContatoForne" closable="true" width="80%">
+                        <p:dataTable value="#{controleCadFornecedor.listaDetalhes}" var="itemDeatahlesC" emptyMessage="Não tem contato para exibir!">
+                            <p:column width="300">
+                                <f:facet name="header">
+                                    <h:outputText value="Contoato"/>
+                                </f:facet>
+                                <h:outputText value="#{itemDeatahlesC.contato}"/>
+                            </p:column>
+                            <p:column width="200">
+                                <f:facet name="header">
+                                    <h:outputText value="Fone Um"/>
+                                </f:facet>
+                                <h:outputText value="#{itemDeatahlesC.telefoneUm }"/>
+                            </p:column>
+                            <p:column width="200">
+                                <f:facet name="header">
+                                    <h:outputText value="Fone Dois"/>
+                                </f:facet>
+                                <h:outputText value="#{itemDeatahlesC.telefoneDois}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Email"/>
+                                </f:facet>
+                                <h:outputText value="#{itemDeatahlesC.email}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:dialog>
+                </h:form>
+            </f:view>
+            <f:view>
+                <h:form id="frmObs">
+                    <p:dialog widgetVar="dlgObs" id="dlgObs" header="Dados da observação" closable="true" position="350, 220">
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Informações adicionais" for="adicionais1" />
+                            <p:textEditor widgetVar="editorOb1" id="adicionais1" value="#{controleCadFornecedor.cadFornecedor.observacao}" height="450"  />
+                        </h:panelGrid>
+                    </p:dialog>
+                </h:form>
+            </f:view>
+
+        </p:panel>
+    </ui:define>
+
+</ui:composition>

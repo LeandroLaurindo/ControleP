@@ -42,7 +42,7 @@ public class ControleUsuario implements Serializable {
     public void salvar() {
         if (usuario.getIdUsuario() == null) {
             usuario.setLogin(usuario.getLogin().toLowerCase().trim());
-            usuario.setSenha(usuario.getSenha().toLowerCase().trim());
+            usuario.setSenha(Util.hashPassword(usuario.getSenha().toLowerCase().trim()));
             if (jpaController.create(usuario)) {
                 Util.criarMensagemInfo("Salvo com sucesso!");
                 listar();
@@ -52,6 +52,7 @@ public class ControleUsuario implements Serializable {
                 Util.criarMensagemErro("Erro não foi possivel salvar!");
             }
         } else {
+                usuario.setSenha(Util.hashPassword(usuario.getSenha().toLowerCase().trim()));
             if (jpaController.edit(usuario)) {
                 Util.criarMensagemInfo("Editado com sucesso!");
                 listar();

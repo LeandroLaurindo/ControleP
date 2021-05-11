@@ -10,10 +10,10 @@
     <ui:define name="inportaClientes">
         <p:panel>
             <h:form id="form">
-                <p:growl id="messages" showDetail="true"   />
+                <p:growl id="messages" showDetail="true"/>
                 <p:fileUpload value="#{importacaoClientesBean.arquivo}" id="upl"  fileUploadListener="#{importacaoClientesBean.fileUploadAction}" mode="advanced" dragDropSupport="true" 
                               update="messages" sizeLimit="1000000000000000000" multiple="false"  allowTypes="/(\.|\/)(csv|accdb|accde|accdr|accdt|mdw|laccdb)$/"
-                              auto="true" label="Importar arquivo csv" invalidFileMessage="Somente é permitido carregar arquivos no formato .csv ( ; ou , )" />
+                              auto="true" label="Importar arquivo csv" invalidFileMessage="Somente é permitido carregar arquivos no formato .csv ( ; ou , )"  />
             </h:form>
 
             <p:dialog widgetVar="access"  width="300" modal="false"  draggable="false" closable="true" resizable="false" showHeader="false"   > 
@@ -30,21 +30,21 @@
                 </h:form>
             </p:dialog>
 
-            <p:dialog   widgetVar="planilhaCamposAde"   height="500" width="700" modal="false" responsive="true" showHeader="false"  header="IMPORTAÇÃO DE ARQUIVO"  >
-                <h:form id="form6"   >
-                    <h:outputText class="negrito" value="Requisitos essenciais para inserção de dados:"   /><br/>
-                    <h:outputText value=" Controle de CLIENTES: CPF OU CNPJ, NOME , PLATAFORMA, LOGIN;"  /> <br/>
-                    <h:outputText class="negrito" value="Verifique se o sistema associou corretamente as colunas:"   /><br/>
+            <p:dialog  widgetVar="planilhaCamposAde" height="500" width="700" modal="false" responsive="true" showHeader="false" header="IMPORTAÇÃO DE ARQUIVO">
+                <h:form id="form6">
+                    <h:outputText class="negrito" value="Requisitos essenciais para inserção de dados:" /><br/>
+                    <h:outputText value=" Controle de CLIENTES: CPF OU CNPJ, NOME , PLATAFORMA, LOGIN;" /> <br/>
+                    <h:outputText class="negrito" value="Verifique se o sistema associou corretamente as colunas:" /><br/>
 
                     <br /> 
 
-                    <p:dataTable var="col" value="#{importacaoClientesBean.colunas}"   >
+                    <p:dataTable var="col" value="#{importacaoClientesBean.colunas}" >
                         <p:column headerText="COLUNAS ARQUIVO EXTERNO"  >
                             <h:outputText class="negrito" value="#{col.coluna.toUpperCase()}" />
                         </p:column>
 
-                        <p:column headerText="BANCO DE DADOS => #{importacaoClientesBean.tipoArquivo} " style=" text-align: center; " >
-                            <h:selectOneMenu value="#{col.campoAssociado}" style="width:250px  "   >
+                        <p:column headerText="BANCO DE DADOS => #{importacaoClientesBean.tipoArquivo}" style=" text-align: center;" >
+                            <h:selectOneMenu value="#{col.campoAssociado}" style="width:250px;"   >
                                 <f:selectItem itemLabel="Selecione" itemValue="" />
                                 <f:selectItems value="#{importacaoClientesBean.cars}" />
                             </h:selectOneMenu>

@@ -18,7 +18,7 @@
             </f:view>
             <f:view>
                 <h:form id="cadFrmCham">
-                    <p:dialog widgetVar="dlgAtendimento" closable="true">
+                    <p:dialog widgetVar="dlgAtendimento" closable="true" position="350,130">
                         <p:fieldset legend="Criar/Editar">
                             <h:panelGrid columns="2">
                                 <p:outputLabel value="Clientes:" for="clientesId" />
@@ -36,11 +36,9 @@
                             </h:panelGrid>
                             <h:panelGrid columns="1">
                                 <p:outputLabel value="Descrição do servico:" for="descricaoservico" />
-                                <p:editor id="descricaoservico" widgetVar="editorWidget" value="#{controleChamados.chamados.descricaoservicoNovo}" width="600" />
-                                <p:commandButton value="Clear" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-closethick" />
+                                   <p:textEditor widgetVar="editorWidget" id="descricaoservico" value="#{controleChamados.chamados.descricaoservicoNovo}" height="250"  />
+                                   <p:commandButton value="Clear" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-closethick" />
                             </h:panelGrid>
-
-
                             <p:commandButton value="Salvar" styleClass="botao" icon="ui-icon-disk" actionListener="#{controleChamados.salvar()}" style="float: right;"/>
                             <p:commandButton value="Fechar" styleClass="botao" icon="ui-icon-cancel" onclick="PF('dlgAtendimento').hide()" process="@this" style="float: right;"/>
                         </p:fieldset>
@@ -85,7 +83,7 @@
                                              icon="ui-icon-search" process="@this" title="Mostrar detalhes"/>
 
                         </p:column>
-                        <p:column width="100">
+                        <p:column width="200">
                             <f:facet name="header">
                                 <h:outputText value="DataInicio"/>
                             </f:facet>
@@ -93,7 +91,7 @@
                                 <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                             </h:outputText>
                         </p:column>
-                        <p:column width="100">
+                        <p:column width="100" rendered="false">
                             <f:facet name="header">
                                 <h:outputText value="DataFim"/>
                             </f:facet>
@@ -105,7 +103,7 @@
                             <f:facet name="header">
                                 <h:outputText value="Ação" />
                             </f:facet>
-                            <p:commandButton value="" styleClass="botaoIcones" actionListener="#{controleChamados.finalizar(item)}" icon="ui-icon-check"  process="@this" rendered="#{item.dataFim == null}" title="Finalizar"/>
+                            <p:commandButton value="" styleClass="botaoIcones" actionListener="#{controleChamados.finalizar(item)}" icon="ui-icon-check"  process="@this" rendered="false" title="Finalizar" />
                             <p:commandButton value="" styleClass="botaoIcones" actionListener="#{controleChamados.setarChamadosatendidosEditar(item)}" icon="ui-icon-pencil" process="@this" oncomplete="PF('dlgAtendimento').show()" title="Fechar"/>
                             <p:commandButton value="" styleClass="botaoIcones" actionListener="#{controleChamados.setarChamadosatendidosRemover(item)}" icon="ui-icon-trash" process="@this" oncomplete="PF('dlgConfirmarD').show()" title="Excluir"/>
                         </p:column>
@@ -114,8 +112,9 @@
             </f:view>
             <f:view>
                 <h:form id="frmDescricao">
-                    <p:dialog widgetVar="dlgDescricao" closable="true" header="Descrição Atendimento" style="max-width: 80%;">
-                        <h:outputText value="#{controleChamados.descricao}" escape="false"/>
+                    <p:dialog widgetVar="dlgDescricao" closable="true" header="Descrição Atendimento" width="80%" height="400">
+                    
+                         <p:textEditor widgetVar="editorWidget" id="descricaoservico" value="#{controleChamados.descricao}" height="350"  />
                         <hr />
                         <p:commandButton value="Fechar" styleClass="botao" icon="ui-icon-close" onclick="PF('dlgDescricao').hide()" />
                     </p:dialog>

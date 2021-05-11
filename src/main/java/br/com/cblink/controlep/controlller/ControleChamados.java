@@ -123,7 +123,7 @@ public class ControleChamados implements Serializable {
         if (chamados.getId() == null) {
             chamados.setDataInicio(new Date());
             chamados.setClientesId(cliente);
-            chamados.setDescricaoservicoNovo(chamados.getDescricaoservicoNovo().toUpperCase());
+            chamados.setDescricaoservicoNovo(chamados.getDescricaoservicoNovo().replaceAll("&NBSP;", " "));
             if (jpaController.create(chamados)) {
                 Util.criarMensagemInfo("Salvo com sucesso!");
                 listar();
@@ -134,7 +134,7 @@ public class ControleChamados implements Serializable {
             }
         } else {
             chamados.setClientesId(cliente);
-            chamados.setDescricaoservicoNovo(chamados.getDescricaoservicoNovo().toUpperCase());
+            chamados.setDescricaoservicoNovo(chamados.getDescricaoservicoNovo());
             if (jpaController.edit(chamados)) {
                 Util.criarMensagemInfo("Editado com sucesso!");
                 listar();
@@ -189,7 +189,7 @@ public class ControleChamados implements Serializable {
     public void setartelefone() {
         if (cliente.getTelefone() != null) {
             if (!cliente.getTelefone().isEmpty()) {
-                System.err.println(cliente.getTelefone());
+                //System.err.println(cliente.getTelefone());
                 chamados.setTelefone(cliente.getTelefone());
             }
         }

@@ -19,24 +19,93 @@
 
             <f:view>
                 <h:form id="cadCli">
-                    <p:dialog widgetVar="dlgCliente" closable="true">
-                        <p:fieldset  legend="Criar/Editar">
-                            
-                            <h:panelGrid columns="2">
+                    <p:dialog widgetVar="dlgCliente" closable="true" header="Criar/Editar">
+
+                        <h:panelGrid columns="3">
+                            <h:panelGrid columns="1">
                                 <p:outputLabel value="Nome:" for="nome" />
                                 <p:inputText id="nome" value="#{controlerCliente.clientes.nome}" size="50" onkeyup="value = value.toUpperCase()" title="Nome" required="true" requiredMessage="O Nome é obrigatório."/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
                                 <p:outputLabel value="CpfCnpj:" for="cpfCnpj" />
                                 <p:inputText id="cpfCnpj" value="#{controlerCliente.clientes.cpfCnpj}" title="CpfCnpj" />
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
                                 <p:outputLabel value="Telefone:" for="telefone" />
                                 <p:inputText id="telefone" value="#{controlerCliente.clientes.telefone}" title="Telefone" />
+                            </h:panelGrid>
+                        </h:panelGrid>
+                        <h:panelGrid columns="3">
+                            <h:panelGrid columns="1">  
+                                <p:outputLabel value="Endereço" for="endereco" />
+                                <p:inputText id="endereco" size="50" value="#{controlerCliente.clientes.endereco}" title="endereco" />
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Numero" for="numero" />
+                                <p:inputText id="numero" value="#{controlerCliente.clientes.numero}" title="endereco" />
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
                                 <p:outputLabel value="Login:" for="login" />
                                 <p:inputText id="login" value="#{controlerCliente.clientes.login}" title="login" />
-                                <p:outputLabel value="Plataforma" for="plataforma" />
-                                <p:inputText id="plataforma" value="#{controlerCliente.clientes.plataforma}" title="plataforma" />
-                                <p:commandButton value="Salvar" styleClass="botao" actionListener="#{controlerCliente.salvar()}" icon="ui-icon-disk" />
-                                <p:commandButton value="Fechar" styleClass="botao" icon="ui-icon-cancel" onclick="PF('dlgCliente').hide()" process="@this" />
                             </h:panelGrid>
-                        </p:fieldset>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Plataforma" for="plataforma" />
+                            <p:inputText id="plataforma" value="#{controlerCliente.clientes.plataforma}" title="plataforma" />
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Informações adicionais" for="adicionais" />
+                            <p:textEditor widgetVar="editor2" id="adicionais" value="#{controlerCliente.clientes.observacao}" height="250"  />
+                        </h:panelGrid>
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Salvar" styleClass="botao"  actionListener="#{controlerCliente.salvar()}" icon="ui-icon-disk" />
+                            <p:commandButton value="Fechar" styleClass="botao" icon="ui-icon-cancel" onclick="PF('dlgCliente').hide()" process="@this" />
+                        </h:panelGrid>
+
+                    </p:dialog>
+                </h:form>
+            </f:view>
+            <f:view>
+                <h:form id="formD">
+                    <p:dialog widgetVar="dlgD" id="dlgD" closable="true" header="Dados">
+                        <h:panelGrid columns="3">
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Nome:" for="nome1" />
+                                <p:inputText id="nome1" value="#{controlerCliente.clientes.nome}" size="50" onkeyup="value = value.toUpperCase()" title="Nome" required="true" requiredMessage="O Nome é obrigatório." readonly="true"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="CpfCnpj:" for="cpfCnpj1" />
+                                <p:inputText id="cpfCnpj1" value="#{controlerCliente.clientes.cpfCnpj}" title="CpfCnpj" readonly="true"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Telefone:" for="telefone1" />
+                                <p:inputText id="telefone1" value="#{controlerCliente.clientes.telefone}" title="Telefone" readonly="true"/>
+                            </h:panelGrid>
+                        </h:panelGrid>
+                        <h:panelGrid columns="3">
+
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Endereço" for="endereco1" />
+                                <p:inputText id="endereco1" value="#{controlerCliente.clientes.endereco}" size="50" title="endereco" readonly="true"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Numero" for="numero1" />
+                                <p:inputText id="numero1" value="#{controlerCliente.clientes.numero}" title="endereco" readonly="true"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Login:" for="login1" />
+                                <p:inputText id="login1" value="#{controlerCliente.clientes.login}" title="login" readonly="true"/>
+                            </h:panelGrid>  
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Plataforma" for="plataforma1" />
+                            <p:inputText id="plataforma1" value="#{controlerCliente.clientes.plataforma}" title="plataforma" readonly="true"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Informações adicionais" for="adicionais1" />
+                            <p:textEditor widgetVar="editor1" id="adicionais1" value="#{controlerCliente.clientes.observacao}"  height="250" readonly="true" />
+                        </h:panelGrid>
+                        <p:commandButton value="Fechar" styleClass="botao" icon="ui-icon-cancel" onclick="PF('dlgD').hide()" process="@this" />
                     </p:dialog>
                 </h:form>
             </f:view>
@@ -56,7 +125,7 @@
                             </p:outputPanel>
                             <h3>Lista de Clientes</h3>
                         </f:facet>
-                        <p:column filterBy="#{item.nome}">
+                        <p:column filterBy="#{item.nome}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="Nome"/>
                             </f:facet>
@@ -68,35 +137,19 @@
                             </f:facet>
                             <h:outputText value="#{item.cpfCnpj}"/>
                         </p:column>
-                        <p:column width="100">
-                            <f:facet name="header">
-                                <h:outputText value="Telefone"/>
-                            </f:facet>
-                            <h:outputText value="#{item.telefone}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="Login"/>
-                            </f:facet>
-                            <h:outputText value="#{item.login}"/>
-                        </p:column>
-                        <p:column width="100">
-                            <f:facet name="header">
-                                <h:outputText value="Plataforma"/>
-                            </f:facet>
-                            <h:outputText value="#{item.plataforma}"/>
-                        </p:column>
-                        <p:column>
+
+                        <p:column width="300">
                             <f:facet name="header">
                                 <h:outputText value="Ação"/>
                             </f:facet> 
+                            <p:commandButton value="Detalhes" styleClass="botao" actionListener="#{controlerCliente.setarClienteDetalhes(item)}"  process="@this" icon="ui-icon-search" />
                             <p:commandButton value="Editar" styleClass="botao" actionListener="#{controlerCliente.setarClienteEditar(item)}" oncomplete="PF('dlgCliente').show()" process="@this" icon="ui-icon-pencil" />
-                             <p:commandButton value="Excluir" styleClass="botao" actionListener="#{controlerCliente.setarClienteRemover(item)}" oncomplete="PF('dlgConfirmarC').show()" process="@this" icon="ui-icon-trash" />
+                            <p:commandButton value="Excluir" styleClass="botao" actionListener="#{controlerCliente.setarClienteRemover(item)}" oncomplete="PF('dlgConfirmarC').show()" process="@this" icon="ui-icon-trash" />
                         </p:column>
                     </p:dataTable>
                 </h:form>
             </f:view>
-               <f:view>
+            <f:view>
                 <h:form> 
                     <p:dialog header="Confirmação" closable="true" widgetVar="dlgConfirmarC">
                         <h:panelGrid columns="1">

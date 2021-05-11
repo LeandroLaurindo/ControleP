@@ -40,6 +40,13 @@ public class ControlerNavegacao implements Serializable {
     public String clientes() {
         return "/paginas/controleClientes.xhtml?faces-redirect=true";
     }
+    
+    public String fornecedores() {
+        return "/paginas/fornecedores.xhtml?faces-redirect=true";
+    }
+     public String equipamentos() {
+        return "/paginas/equipamentos.xhtml?faces-redirect=true";
+    }
 
     public String home() {
         return "/paginas/home.xhtml?faces-redirect=true";

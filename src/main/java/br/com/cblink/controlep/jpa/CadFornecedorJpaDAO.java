@@ -1,9 +1,8 @@
 package br.com.cblink.controlep.jpa;
 
-import br.com.cblink.controlep.entidades.Chamadosatendidos;
+import br.com.cblink.controlep.entidades.CadFornecedor;
 import br.com.cblink.controlep.entidades.Clientes;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,22 +15,22 @@ import javax.persistence.criteria.Root;
  *
  * @author Leandro Laurindo
  */
-public class ClienteJpaDAO implements Serializable {
+public class CadFornecedorJpaDAO implements Serializable {
 
     public EntityManager getEntityManager() {
         return ConexaoBD.getConnection();
     }
 
-    public boolean create(Clientes cliente) {
+    public boolean create(CadFornecedor fornecedor) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(cliente);
+            em.persist(fornecedor);
             em.getTransaction().commit();
             return true;
         } catch (Exception ex) {
-            Logger.getLogger(ClienteJpaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CadFornecedorJpaDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         } finally {
             if (em != null) {
@@ -40,17 +39,17 @@ public class ClienteJpaDAO implements Serializable {
         }
     }
 
-    public boolean edit(Clientes cliente) {
+    public boolean edit(CadFornecedor fornecedor) {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            em.find(Clientes.class, cliente.getId());
+            em.find(CadFornecedor.class, fornecedor.getIdFornecedor());
             em.getTransaction().begin();
-            em.merge(cliente);
+            em.merge(fornecedor);
             em.getTransaction().commit();
             return true;
         } catch (Exception ex) {
-            Logger.getLogger(ClienteJpaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CadFornecedorJpaDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         } finally {
             if (em != null) {
@@ -60,20 +59,19 @@ public class ClienteJpaDAO implements Serializable {
     }
 
     public boolean destroy(Integer id) {
-        
         EntityManager em = null;
         try {
-                       
+            em = getEntityManager();
+            em.getTransaction().begin();
+            CadFornecedor fornecedor;
             try {
-                em = getEntityManager();
-                em.getTransaction().begin();
-                Clientes cliente = em.find(Clientes.class, id);
-                cliente.getId();
-                em.remove(cliente);
+                fornecedor = em.find(CadFornecedor.class, id);
+                fornecedor.getIdFornecedor();
+                em.remove(fornecedor);
                 em.getTransaction().commit();
                 return true;
             } catch (Exception ex) {
-                Logger.getLogger(ClienteJpaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CadFornecedorJpaDAO.class.getName()).log(Level.SEVERE, null, ex);
                 return false;
             }
         } finally {
@@ -83,53 +81,8 @@ public class ClienteJpaDAO implements Serializable {
         }
     }
 
-    public boolean destroyDados(Integer id) {
-        EntityManager manager = null;
-        List<Chamadosatendidos> lista = new ArrayList<>();
-        try {
-            manager = getEntityManager();
-            lista = manager.createQuery("SELECT c FROM Chamadosatendidos c WHERE c.clientesId.id =" + id + "").getResultList();
-        } catch (Exception e) {
-
-        } finally {
-            if (manager != null) {
-                manager.close();
-            }
-        }
-
-        EntityManager em = getEntityManager();
-        boolean retorno = true;
-        for (Chamadosatendidos cht : lista) {
-
-            em.getTransaction().begin();
-            try {
-                Chamadosatendidos c = em.find(Chamadosatendidos.class, cht.getId());
-                c.getId();
-                em.remove(c);
-                em.getTransaction().commit();
-                retorno = true;
-            } catch (Exception ex) {
-                Logger.getLogger(ClienteJpaDAO.class.getName()).log(Level.SEVERE, null, ex);
-                retorno = false;
-            }
-        }
-        if (em != null) {
-            em.close();
-        }
-        return retorno;
-    }
-
     public List<Clientes> findClientesEntities() {
-        EntityManager em = getEntityManager();
-        try {
-            return em.createQuery("SELECT c FROM Clientes c ORDER BY c.id DESC").getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
-    public List<Clientes> findClientesEntities(int maxResults, int firstResult) {
-        return findClientesEntities(false, maxResults, firstResult);
+        return findClientesEntities(true, -1, -1);
     }
 
     public List<Clientes> findClientesEntities(boolean all, int maxResults, int firstResult) {
@@ -147,8 +100,8 @@ public class ClienteJpaDAO implements Serializable {
             em.close();
         }
     }
-    
-  public List<Clientes> listarClientesConfiltros(String jpql) {
+
+    public List<CadFornecedor> listarCadFornecedores(String jpql) {
         EntityManager em = getEntityManager();
         try {
             return em.createQuery(jpql).getResultList();
@@ -157,19 +110,61 @@ public class ClienteJpaDAO implements Serializable {
         }
     }
 
-    public Clientes findClientes(Integer id) {
+    public List<CadFornecedor> findCadFornecedorEntities() {
+        return findCadFornecedorEntities(true, -1, -1);
+    }
+
+    public List<CadFornecedor> findCadFornecedorEntities(int maxResults, int firstResult) {
+        return findCadFornecedorEntities(false, maxResults, firstResult);
+    }
+
+    public List<CadFornecedor> findCadFornecedorEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Clientes.class, id);
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(CadFornecedor.class));
+            Query q = em.createQuery(cq);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
         } finally {
             em.close();
         }
     }
 
-    public Clientes carregarClientes(String jpql) {
+    public List<CadFornecedor> listarConfiltros(String jpql) {
         EntityManager em = getEntityManager();
         try {
-            return em.createQuery(jpql, Clientes.class).getSingleResult();
+            return em.createQuery(jpql).getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<String> listarTelefones(String jpql) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.createQuery(jpql).getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public CadFornecedor findCadFornecedor(Integer id) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.find(CadFornecedor.class, id);
+        } finally {
+            em.close();
+        }
+    }
+
+    public CadFornecedor carregarCadFornecedor(String jpql) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.createQuery(jpql, CadFornecedor.class).getSingleResult();
         } catch (Throwable ex) {
             return null;
         } finally {
@@ -177,11 +172,11 @@ public class ClienteJpaDAO implements Serializable {
         }
     }
 
-    public int getClientesCount() {
+    public int getCadFornecedorCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Clientes> rt = cq.from(Clientes.class);
+            Root<CadFornecedor> rt = cq.from(CadFornecedor.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

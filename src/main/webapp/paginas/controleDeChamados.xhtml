@@ -33,6 +33,8 @@
                                 <p:inputText id="solicitante" value="#{controleChamados.chamados.solicitante}" title="Solicitante" onkeyup="value = value.toUpperCase()" />
                                 <p:outputLabel value="Telefone:" for="telefone" />
                                 <p:inputText id="telefone" value="#{controleChamados.chamados.telefone}" title="Telefone" />
+                                <p:outputLabel value="Assunto:" for="assunto" />
+                                <p:inputText id="assunto" value="#{controleChamados.chamados.assunto}" title="Assunto" onkeyup="value = value.toUpperCase()" />
                             </h:panelGrid>
                             <h:panelGrid columns="1">
                                 <p:outputLabel value="Descrição do servico:" for="descricaoservico" />
@@ -48,7 +50,7 @@
             <f:view>
                 <h:form id="formTbChamados">
                     <p:dataTable value="#{controleChamados.listaChamadosatendidos}" var="item" widgetVar="pausaTable2" paginator="true"
-                                 emptyMessage="Nenhum usuário encontrado!" currentPageReportTemplate="(Pag.{currentPage}/{totalPages} - {totalRecords} registros)"
+                                 emptyMessage="Nenhum atendimento encontrado!" currentPageReportTemplate="(Pag.{currentPage}/{totalPages} - {totalRecords} registros)"
                                  rows="10" rowsPerPageTemplate="10,20,40,#{controleChamados.listaChamadosatendidos.size()}">
                         <f:facet name="header">
 
@@ -76,12 +78,9 @@
                         </p:column>
                         <p:column width="100">
                             <f:facet name="header">
-                                <h:outputText value="Descricao serviço" style="font-size: 10px!important;"/>
+                                <h:outputText value="Assunto"/>
                             </f:facet>
-                            <p:commandButton value="" styleClass="botaoDetalhe" actionListener="#{controleChamados.setarDescricao(item.descricaoservicoNovo)}" 
-                                             oncomplete="PF('dlgDescricao').show()" 
-                                             icon="ui-icon-search" process="@this" title="Mostrar detalhes"/>
-
+                            <h:outputText value="#{item.assunto}"/>
                         </p:column>
                         <p:column width="200">
                             <f:facet name="header">
@@ -103,8 +102,9 @@
                             <f:facet name="header">
                                 <h:outputText value="Ação" />
                             </f:facet>
+                            <p:commandButton value="" styleClass="botaoIcones" actionListener="#{controleChamados.setarDescricao(item.descricaoservicoNovo)}" oncomplete="PF('dlgDescricao').show()" icon="ui-icon-search" process="@this" title="Mostrar detalhes"/>
                             <p:commandButton value="" styleClass="botaoIcones" actionListener="#{controleChamados.finalizar(item)}" icon="ui-icon-check"  process="@this" rendered="false" title="Finalizar" />
-                            <p:commandButton value="" styleClass="botaoIcones" actionListener="#{controleChamados.setarChamadosatendidosEditar(item)}" icon="ui-icon-pencil" process="@this" oncomplete="PF('dlgAtendimento').show()" title="Fechar"/>
+                            <p:commandButton value="" styleClass="botaoIcones" actionListener="#{controleChamados.setarChamadosatendidosEditar(item)}" icon="ui-icon-pencil" process="@this" oncomplete="PF('dlgAtendimento').show()" title="Editar"/>
                             <p:commandButton value="" styleClass="botaoIcones" actionListener="#{controleChamados.setarChamadosatendidosRemover(item)}" icon="ui-icon-trash" process="@this" oncomplete="PF('dlgConfirmarD').show()" title="Excluir"/>
                         </p:column>
                     </p:dataTable>

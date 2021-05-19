@@ -10,10 +10,11 @@
     <class>br.com.cblink.controlep.entidades.Chamadosatendidos</class>
     <class>br.com.cblink.controlep.entidades.CadFornecedor</class>
     <class>br.com.cblink.controlep.entidades.CadEquipamentos</class>
+    <class>br.com.cblink.controlep.entidades.CadEquipamentosDetalhe</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
-      <!--<property name="javax.persistence.jdbc.url" value="jdbc:postgresql:///"/>  -->
-      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql:///"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://"/>  
+      <!--<property name="javax.persistence.jdbc.url" value="jdbc:postgresql:///>-->
       <property name="javax.persistence.jdbc.user" value="postgres"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
       <property name="javax.persistence.jdbc.password" value=""/>

@@ -6,6 +6,7 @@
 package br.com.cblink.controlep.controlller;
 
 import br.com.cblink.controlep.entidades.CadEquipamentos;
+import br.com.cblink.controlep.entidades.CadEquipamentosDetalhe;
 import br.com.cblink.controlep.entidades.CadFornecedor;
 import br.com.cblink.controlep.entidades.Clientes;
 import br.com.cblink.controlep.jpa.CadEquipamentosJpaDAO;
@@ -41,12 +42,19 @@ public class ControleCadEquipamentos implements Serializable {
     private List<CadEquipamentos> listaEquipamentos;
 
     private CadEquipamentos cadEquipamentos;
+    
+    private List<CadEquipamentosDetalhe> listaEquipamentosDetalhe;
+    
+    private CadEquipamentosDetalhe cadEquipamentosDetalhe;
 
     private List<Clientes> listaClientes;
 
     private Clientes clientes;
 
     private List<CadFornecedor> listaFornecedores;
+    
+    private String nomeEquipamentoDetalhado = "";
+    private Integer idEquipamentoDetalhado = 0;
 
     @PostConstruct
     public void init() {
@@ -57,9 +65,11 @@ public class ControleCadEquipamentos implements Serializable {
         this.cejdao = new CadEquipamentosJpaDAO();
         this.cjdao = new ClienteJpaDAO();
         this.listaEquipamentos = new ArrayList<>();
+        this.listaEquipamentosDetalhe = new ArrayList<>();
         this.cadEquipamentos = new CadEquipamentos();
         this.listaClientes = new ArrayList<>();
         this.clientes = new Clientes();
+        this.cadEquipamentosDetalhe = new CadEquipamentosDetalhe();
         listar();
         listarFornecedores();
         listarClientes();
@@ -124,6 +134,30 @@ public class ControleCadEquipamentos implements Serializable {
             }
         }
     }
+    
+    public void salvarDetalhes() {
+        if (this.cadEquipamentosDetalhe.getIdEquipDet() == null) {
+            if (this.cejdao.createEquipDetalhe(this.cadEquipamentosDetalhe)) {
+                //listar();
+                this.cadEquipamentosDetalhe = new CadEquipamentosDetalhe();
+                Util.criarMensagemInfo("Cadastro realizado com sucesso!");
+                Util.chamarFuncaoJs("PF('dlgCadEquipDetalhe').hide();");
+                //Util.updateComponente("dlgDetalhesEquipamento");
+            } else {
+                Util.criarMensagemErro("Erro ao cadastro!");
+            }
+        } else {
+            if (this.cejdao.editEquipDetalhe(this.cadEquipamentosDetalhe)) {
+                //listar();
+                this.cadEquipamentosDetalhe = new CadEquipamentosDetalhe();
+                Util.criarMensagemInfo("Alteração realizada com sucesso!");
+                Util.chamarFuncaoJs("PF('dlgCadEquipDetalhe').hide();");
+                //Util.updateComponente("dlgDetalhesEquipamento");
+            } else {
+                Util.criarMensagemErro("Erro ao editar!");
+            }
+        }
+    }
 
     public void deletar() {
         if (this.cadEquipamentos.getIdEquipamentos() != null) {
@@ -150,10 +184,62 @@ public class ControleCadEquipamentos implements Serializable {
             Util.criarMensagemAviso("Equipamento não pode ser removido esta com id nulo!");
         }
     }
+    
+    public void deletarDetalhes(CadEquipamentosDetalhe ce) {
+        if (ce.getIdEquipDet()!= null) {
+            if (this.cejdao.destroyDetalhes(ce.getIdEquipDet())) {
+                this.listaEquipamentosDetalhe.remove(ce);
+                Util.criarMensagemInfo("Exclusão realizada com sucesso!");
+                //Util.updateComponente("dlgDetalhesEquipamento");
+            } else {
+                Util.criarMensagemErro("Erro ao excluir!");
+            }
+        } else {
+            Util.criarMensagemAviso("Equipamento não pode ser removido esta com id nulo!");
+        }
+    }
+    
+    public void listaConfiltrosEquipDetalhes(Integer id, String nomeEquip) {
+        String jpql = "SELECT c FROM CadEquipamentosDetalhe c";
+        String hql = "";
+        if (id != null) {
+            hql = " WHERE (c.idEquipamento=" + id + "";
+            if (!hql.isEmpty()) {
+                hql += ")";
+                jpql += hql;
+            }
+        }
+        //jpql += " ORDER BY c.dataInicio DESC";
+        //System.err.println(jpql);
+        listaEquipamentosDetalhe = new ArrayList<>();
+        listaEquipamentosDetalhe = cejdao.listarConfiltrosDetalhe(jpql);
+        setNomeEquipamentoDetalhado(nomeEquip);
+        setIdEquipamentoDetalhado(id);
+        //System.err.println(listaChamadosatendidos.size());
+        /*if (listaEquipamentosDetalhe.size() > 0) {
+            try {
+                cliente = listaChamadosatendidos.get(0).getClientesId();
+            } catch (Exception e) {
+
+            }
+        }*/
+        
+        //Util.chamarFuncaoJs("PF('dlgTableEquipDetalhe').show();");
+        //Util.chamarFuncaoJs("PF('dlgTableEquip').hide();");
+        
+        //org.primefaces.PrimeFaces.current().executeScript("PF('pausaTable2').clearFilters()");
+
+        //org.primefaces.PrimeFaces.current().ajax().update("frmTableEquimentosDetalhes");
+    }
 
     public void setar(CadEquipamentos cf) {
         this.cadEquipamentos = new CadEquipamentos();
         this.cadEquipamentos = cf;
+    }
+    
+    public void setarDetalhes(CadEquipamentosDetalhe cf) {
+        this.cadEquipamentosDetalhe = new CadEquipamentosDetalhe();
+        this.cadEquipamentosDetalhe = cf;
     }
 
     public void novo() {
@@ -161,6 +247,11 @@ public class ControleCadEquipamentos implements Serializable {
         this.cadEquipamentos.setCodCliente(0);
     }
 
+    public void novoDetalhe() {
+        this.cadEquipamentosDetalhe = new CadEquipamentosDetalhe();
+        this.cadEquipamentosDetalhe.setIdEquipamento(getIdEquipamentoDetalhado());
+    }
+    
     public void mostrarFabricante(CadEquipamentos cf) {
         if (cf.getIdFornecedor() == null) {
             Util.criarMensagemAviso("Nenhum fabricante encontrado!");
@@ -266,4 +357,36 @@ public class ControleCadEquipamentos implements Serializable {
         this.clientes = clientes;
     }
 
+    public CadEquipamentosDetalhe getCadEquipamentosDetalhe() {
+        return cadEquipamentosDetalhe;
+    }
+
+    public void setCadEquipamentosDetalhe(CadEquipamentosDetalhe cadEquipamentosDetalhe) {
+        this.cadEquipamentosDetalhe = cadEquipamentosDetalhe;
+    }
+    
+    public List<CadEquipamentosDetalhe> getListaEquipamentosDetalhe() {
+        return listaEquipamentosDetalhe;
+    }
+
+    public void setListaEquipamentosDetalhe(List<CadEquipamentosDetalhe> listaEquipamentosDetalhe) {
+        this.listaEquipamentosDetalhe = listaEquipamentosDetalhe;
+    }
+
+    public String getNomeEquipamentoDetalhado() {
+        return nomeEquipamentoDetalhado;
+    }
+
+    public void setNomeEquipamentoDetalhado(String nomeEquipamentoDetalhado) {
+        this.nomeEquipamentoDetalhado = nomeEquipamentoDetalhado;
+    }
+
+    public Integer getIdEquipamentoDetalhado() {
+        return idEquipamentoDetalhado;
+    }
+
+    public void setIdEquipamentoDetalhado(Integer idEquipamentoDetalhado) {
+        this.idEquipamentoDetalhado = idEquipamentoDetalhado;
+    }
+    
 }

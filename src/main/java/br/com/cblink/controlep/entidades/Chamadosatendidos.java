@@ -58,6 +58,9 @@ public class Chamadosatendidos implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "descricaoservico_novo")
     private String descricaoservicoNovo;
+    @Size(max = 100)
+    @Column(name = "assunto")
+    private String assunto;
     @JoinColumn(name = "clientes_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Clientes clientesId;
@@ -123,6 +126,14 @@ public class Chamadosatendidos implements Serializable {
 
     public void setDescricaoservicoNovo(String descricaoservicoNovo) {
         this.descricaoservicoNovo = descricaoservicoNovo;
+    }
+    
+    public String getAssunto() {
+        return assunto;
+    }
+
+    public void setAssunto(String assunto) {
+        this.assunto = assunto;
     }
 
     public Clientes getClientesId() {

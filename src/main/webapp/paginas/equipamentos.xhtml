@@ -139,10 +139,43 @@
                     </p:dialog>
                 </h:form>
             </f:view>
+            
+            <f:view>
+                <h:form id="frmCadEquipDetalhes">
+                    <p:dialog header="Detalhe do Equipamento" widgetVar="dlgCadEquipDetalhe" id="dlgCadEquipDetalhe" closable="true" position="350,200">
+                        <h:panelGrid columns="2">
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Equipamento:" for="codEquipamento" />
+                                <p:selectOneMenu id="codEquipamento" value="#{controleCadEquipamentos.cadEquipamentosDetalhe.idEquipamento}" 
+                                                 filter="true" filterMatchMode="contains" panelStyle="width:350px" style="float: left; width: 350px!important;" disabled="true">
+                                    <f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true" />
+                                    <f:selectItems value="#{controleCadEquipamentos.listaEquipamentos}" var="equip" itemLabel="#{equip.nome}" itemValue="#{equip.idEquipamentos}"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="Tipo Serviço:" for="tipoServ" />
+                                <p:inputText id="tipoServ" value="#{controleCadEquipamentos.cadEquipamentosDetalhe.tipoServico}" title="Tipo Serviço" style="width: 350px!important;" onkeyup="value = value.toUpperCase()"/>
+                            </h:panelGrid>
+                            <p:spacer width="40" />
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Detalhes" for="detalhes" />
+                            <p:textEditor widgetVar="editorWidgetx" id="detalhes" value="#{controleCadEquipamentos.cadEquipamentosDetalhe.detalheServico}" height="250"  />
+                            <p:commandButton value="Limpar" type="button" onclick="PF('editorWidgetx').clear();" icon="ui-icon-closethick" />
+                        </h:panelGrid>
+
+                        <br />
+                        <p:commandButton value="Salvar" styleClass="botao" icon="ui-icon-disk" actionListener="#{controleCadEquipamentos.salvarDetalhes()}" update="frmTableEquimentosDetalhes:dlgDetalhesEquipamento" style="float: right;"/>
+                        <p:commandButton value="Fechar" styleClass="botao" icon="ui-icon-cancel" onclick="PF('frmCadEquipDetalhes').hide()" process="@this" style="float: right;"/>
+
+                    </p:dialog>
+                </h:form>
+            </f:view>
 
             <f:view>
                 <h:form id="frmTableEquimentos">
-                    <p:dataTable value="#{controleCadEquipamentos.listaEquipamentos}" var="itemx" widgetVar="pausaTablex" paginator="true"
+                    <p:dataTable value="#{controleCadEquipamentos.listaEquipamentos}" var="itemx" paginator="true" widgetVar="dlgTableEquip"
                                  emptyMessage="Nenhum equipamento encontrado!" currentPageReportTemplate="(Pag.{currentPage}/{totalPages} - {totalRecords} registros)"
                                  rows="10" rowsPerPageTemplate="10,20,40,#{controleCadEquipamentos.listaEquipamentos.size()}" sortBy="#{itemx.nome}">
                         <f:facet name="header">
@@ -153,7 +186,7 @@
                             <f:facet name="header">
                                 <h:outputText value="Nome"/>
                             </f:facet>
-                            <h:outputText value="#{itemx.nome}"/>
+                            <p:commandButton value="#{itemx.nome}" process="@this" actionListener="#{controleCadEquipamentos.listaConfiltrosEquipDetalhes(itemx.idEquipamentos, itemx.nome)}" update="frmTableEquimentosDetalhes" oncomplete="PF('dlgDetalhesEquipamento').show();" style="background: none!important; color: black!important;"/>
                         </p:column>
                         <p:column width="100">
                             <f:facet name="header">
@@ -185,6 +218,42 @@
                     </p:dataTable>
                 </h:form>
             </f:view>
+            
+            <f:view>
+                <h:form id="frmTableEquimentosDetalhes">
+                    <p:dialog header="Detalhes do Equipamento" widgetVar="dlgDetalhesEquipamento" id="dlgDetalhesEquipamento" closable="true" position="350,200">
+                        <p:dataTable value="#{controleCadEquipamentos.listaEquipamentosDetalhe}" var="itemxd" paginator="true" widgetVar="dlgTableEquipDetalhe"
+                                     emptyMessage="Nenhum equipamento encontrado!" currentPageReportTemplate="(Pag.{currentPage}/{totalPages} - {totalRecords} registros)"
+                                     rows="10" rowsPerPageTemplate="10,20,40,#{controleCadEquipamentos.listaEquipamentosDetalhe.size()}" sortBy="#{itemxd.tipoServico}">
+                            <f:facet name="header">
+                                <p:commandButton value="Novo detalhamento" styleClass="botao"  actionListener="#{controleCadEquipamentos.novoDetalhe() }" update="frmCadEquipDetalhes" icon="ui-icon-plus" style="float: right; margin-right: 20px;" oncomplete="PF('dlgCadEquipDetalhe').show();"/>
+                                <h3>#{controleCadEquipamentos.nomeEquipamentoDetalhado}</h3>
+                            </f:facet>
+                            <p:column width="100">
+                                <f:facet name="header">
+                                    <h:outputText value="Tipo Serviço"/>
+                                </f:facet>
+                                <h:outputText value="#{itemxd.tipoServico}"/>
+                            </p:column>
+
+                            <p:column width="50">
+                                <f:facet name="header">
+                                    <h:outputText value="Ação"/>
+                                </f:facet>
+                                <p:commandButton value="" styleClass="botaoIcones" icon="ui-icon-pencil" actionListener="#{controleCadEquipamentos.setarDetalhes(itemxd)}" process="@this" update="frmCadEquipDetalhes" oncomplete="PF('dlgCadEquipDetalhe').show();"  title="Editar" />
+                                <p:commandButton value="" styleClass="botaoIcones" icon="ui-icon-trash" action="#{controleCadEquipamentos.deletarDetalhes(itemxd)}" update="frmTableEquimentosDetalhes:dlgDetalhesEquipamento" process="@this" title="Excluir" >
+                                    <p:confirm header="Atenção" message="Tem certeza deseja remover?" />
+                                </p:commandButton>
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade"  width="250">
+                                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-flat botao" icon="ui-icon-cancel" style="width: 100px;"/>
+                                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes botao" icon="ui-icon-check" style="width: 100px;"/>
+                                </p:confirmDialog>
+                            </p:column>
+                        </p:dataTable>
+                    </p:dialog>
+                </h:form>
+            </f:view>
+            
             <f:view>
                 <h:form id="frmMfabricante">
                     <p:dialog header="Fabricante" widgetVar="dlgMfabricante" id="dlgMfabricante" closable="true">

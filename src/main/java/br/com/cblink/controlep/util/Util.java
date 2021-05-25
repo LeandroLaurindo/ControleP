@@ -87,9 +87,13 @@ public class Util {
     public static boolean checkPass(String senha, String hashedPassword) {
         return BCrypt.checkpw(senha, hashedPassword);
     }
-    
-   /* public static void main(String[] args) {
-        Util util = new Util();
-        System.err.println(hashPassword("senha1515"));
-    }*/
+   
+    public static void main(String[] args) {
+        String f = "AP - ROUTER_ApostilaJSF.pdf24_05_2021_23_01_05";
+        if(f.contains("AP - ROUTER")){
+            System.err.println("sim");
+        }else{
+            System.err.println("nao");
+        }
+    }
 }

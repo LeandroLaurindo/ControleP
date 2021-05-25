@@ -1,17 +1,32 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package br.com.cblink.controlep.util;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 
 /**
  *
- * @author Balcao
+ * @author Felipe Rios
  */
-public class ArquivoImportacaoNovo {
+public class ArquivoImportacaoBackup implements Serializable {
+
+    public static String caminho = System.getProperty("catalina.base");
+
+    public ArquivoImportacaoBackup() {
+     
+    }
+    
 
     public static File escrever(String name, byte[] contents) throws IOException {
         File file = new File(diretorioRaizParaArquivos(), name);
@@ -30,25 +45,21 @@ public class ArquivoImportacaoNovo {
 
     public static java.io.File diretorioRaizParaArquivos() {
 
-        File dir = new File(diretorioRaiz(), "arquivosuteis");
+        File dir = new File(caminho,"backup/sistema");
         dir.mkdirs();
         return dir;
     }
 
     public static File diretorioRaiz() {
-        String realPath = System.getProperty("catalina.base");
+        FacesContext aFacesContext = FacesContext.getCurrentInstance();
+        ServletContext context = (ServletContext) aFacesContext.getExternalContext().getContext();
+
+        String realPath = context.getRealPath("/");
 
         // Aqui cria o diretorio caso não exista
-        File file = new File(realPath);
+        File file = new File(System.getProperty("catalina.base"));
         file.mkdirs();
-
-        //System.out.println("path:" + file.getAbsolutePath());
-        //byte[] arquivo = event.getFile().getContents();
-        // Estamos utilizando um diretório dentro da pasta temporária. 
-        // No seu projeto, imagino que queira mudar isso para algo como:
-        // File dir = new File(System.getProperty("user.home"), "algaworks");
-        //File dir = new File(System.getProperty("java.io.tmpdir"));
-        //dir.mkdirs();
         return file;
     }
+
 }

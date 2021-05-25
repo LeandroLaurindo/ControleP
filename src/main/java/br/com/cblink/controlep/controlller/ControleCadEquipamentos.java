@@ -12,16 +12,22 @@ import br.com.cblink.controlep.entidades.Clientes;
 import br.com.cblink.controlep.jpa.CadEquipamentosJpaDAO;
 import br.com.cblink.controlep.jpa.CadFornecedorJpaDAO;
 import br.com.cblink.controlep.jpa.ClienteJpaDAO;
+import br.com.cblink.controlep.util.ArquivoImportacaoBackup;
 import br.com.cblink.controlep.util.Util;
+import java.io.File;
 import java.io.Serializable;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -42,9 +48,9 @@ public class ControleCadEquipamentos implements Serializable {
     private List<CadEquipamentos> listaEquipamentos;
 
     private CadEquipamentos cadEquipamentos;
-    
+
     private List<CadEquipamentosDetalhe> listaEquipamentosDetalhe;
-    
+
     private CadEquipamentosDetalhe cadEquipamentosDetalhe;
 
     private List<Clientes> listaClientes;
@@ -52,9 +58,15 @@ public class ControleCadEquipamentos implements Serializable {
     private Clientes clientes;
 
     private List<CadFornecedor> listaFornecedores;
-    
+
     private String nomeEquipamentoDetalhado = "";
     private Integer idEquipamentoDetalhado = 0;
+
+    private UploadedFile filess;
+
+    private List<File> arquivos;
+
+    private File fileRemove;
 
     @PostConstruct
     public void init() {
@@ -123,7 +135,7 @@ public class ControleCadEquipamentos implements Serializable {
                 Util.criarMensagemErro("Erro ao cadastro!");
             }
         } else {
-             this.cadEquipamentos.setDataEquipamento(Calendar.getInstance().getTime());
+            this.cadEquipamentos.setDataEquipamento(Calendar.getInstance().getTime());
             if (this.cejdao.edit(this.cadEquipamentos)) {
                 listar();
                 this.cadEquipamentos = new CadEquipamentos();
@@ -134,7 +146,7 @@ public class ControleCadEquipamentos implements Serializable {
             }
         }
     }
-    
+
     public void salvarDetalhes() {
         if (this.cadEquipamentosDetalhe.getIdEquipDet() == null) {
             if (this.cejdao.createEquipDetalhe(this.cadEquipamentosDetalhe)) {
@@ -184,9 +196,9 @@ public class ControleCadEquipamentos implements Serializable {
             Util.criarMensagemAviso("Equipamento não pode ser removido esta com id nulo!");
         }
     }
-    
+
     public void deletarDetalhes(CadEquipamentosDetalhe ce) {
-        if (ce.getIdEquipDet()!= null) {
+        if (ce.getIdEquipDet() != null) {
             if (this.cejdao.destroyDetalhes(ce.getIdEquipDet())) {
                 this.listaEquipamentosDetalhe.remove(ce);
                 Util.criarMensagemInfo("Exclusão realizada com sucesso!");
@@ -198,7 +210,7 @@ public class ControleCadEquipamentos implements Serializable {
             Util.criarMensagemAviso("Equipamento não pode ser removido esta com id nulo!");
         }
     }
-    
+
     public void listaConfiltrosEquipDetalhes(Integer id, String nomeEquip) {
         String jpql = "SELECT c FROM CadEquipamentosDetalhe c";
         String hql = "";
@@ -223,12 +235,10 @@ public class ControleCadEquipamentos implements Serializable {
 
             }
         }*/
-        
+
         //Util.chamarFuncaoJs("PF('dlgTableEquipDetalhe').show();");
         //Util.chamarFuncaoJs("PF('dlgTableEquip').hide();");
-        
         //org.primefaces.PrimeFaces.current().executeScript("PF('pausaTable2').clearFilters()");
-
         //org.primefaces.PrimeFaces.current().ajax().update("frmTableEquimentosDetalhes");
     }
 
@@ -236,7 +246,7 @@ public class ControleCadEquipamentos implements Serializable {
         this.cadEquipamentos = new CadEquipamentos();
         this.cadEquipamentos = cf;
     }
-    
+
     public void setarDetalhes(CadEquipamentosDetalhe cf) {
         this.cadEquipamentosDetalhe = new CadEquipamentosDetalhe();
         this.cadEquipamentosDetalhe = cf;
@@ -251,7 +261,7 @@ public class ControleCadEquipamentos implements Serializable {
         this.cadEquipamentosDetalhe = new CadEquipamentosDetalhe();
         this.cadEquipamentosDetalhe.setIdEquipamento(getIdEquipamentoDetalhado());
     }
-    
+
     public void mostrarFabricante(CadEquipamentos cf) {
         if (cf.getIdFornecedor() == null) {
             Util.criarMensagemAviso("Nenhum fabricante encontrado!");
@@ -276,7 +286,7 @@ public class ControleCadEquipamentos implements Serializable {
 
     public void mostrarCliente(CadEquipamentos cf) {
         try {
-         Integer id = cf.getCodCliente();
+            Integer id = cf.getCodCliente();
             this.clientes = new Clientes();
             this.clientes = this.cjdao.findClientes(id);
             Util.updateComponente("frmMcliente");
@@ -297,8 +307,8 @@ public class ControleCadEquipamentos implements Serializable {
             Util.chamarFuncaoJs("PF('dlgObsx').show();");
         }
     }
-    
-     public void editarObs(CadEquipamentos cf) {
+
+    public void editarObs(CadEquipamentos cf) {
         if (cf.getIdFornecedor() == null) {
             Util.criarMensagemAviso("Nenhum observação encontrada!");
         } else {
@@ -306,6 +316,59 @@ public class ControleCadEquipamentos implements Serializable {
             this.cadEquipamentos = cf;
             Util.updateComponente("frmObsxEditar");
             Util.chamarFuncaoJs("PF('dlgObsxEditar').show();");
+        }
+    }
+
+    public void upload() {
+        try {
+            if (filess != null) {
+                String nomebackup = this.cadEquipamentos.getNome() + "_" + filess.getFileName();
+                Format formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                String x = formatter.format(new Date());
+                nomebackup += x.replaceAll("\\-", "_").replaceAll("\\:", "_").replaceAll(" ", "_").trim();
+
+                ArquivoImportacaoBackup.escrever(nomebackup, filess.getContents());
+                Util.criarMensagemAviso("Arquivo gravado com secesso!");
+            }
+        } catch (Exception ex) {
+        }
+    }
+
+    public void setarNomeArquivos(CadEquipamentos equipamentos) {
+        this.cadEquipamentos = new CadEquipamentos();
+        this.cadEquipamentos = equipamentos;
+        listarAraquivos();
+    }
+
+    public void listarAraquivos() {
+        arquivos = new ArrayList<>();
+        List<File> aux = new ArrayList<>(ArquivoImportacaoBackup.listar());
+        for (File file : aux) {
+            try {
+                if (file.getName().contains(this.cadEquipamentos.getNome())) {
+                    arquivos.add(file);
+                }
+            } catch (Exception e) {
+            }
+        }
+        Util.updateComponente("formTblArquivo");
+        Util.chamarFuncaoJs("PF('dlgTblArquivos').show();");
+    }
+
+    public void setarFileRemover(File file) {
+        setFileRemove(file);
+        Util.updateComponente("formLogConfirma");
+        Util.chamarFuncaoJs("PF('dlgRemoverFile').show()");
+    }
+
+    public void remover() {
+        try {
+            fileRemove.delete();
+            Util.chamarFuncaoJs("PF('dlgRemoverFile').hide()");
+            Util.criarMensagemAviso("Arquivo removido com secesso!");
+            listarAraquivos();
+        } catch (Throwable ex) {
+
         }
     }
 
@@ -364,7 +427,7 @@ public class ControleCadEquipamentos implements Serializable {
     public void setCadEquipamentosDetalhe(CadEquipamentosDetalhe cadEquipamentosDetalhe) {
         this.cadEquipamentosDetalhe = cadEquipamentosDetalhe;
     }
-    
+
     public List<CadEquipamentosDetalhe> getListaEquipamentosDetalhe() {
         return listaEquipamentosDetalhe;
     }
@@ -388,5 +451,29 @@ public class ControleCadEquipamentos implements Serializable {
     public void setIdEquipamentoDetalhado(Integer idEquipamentoDetalhado) {
         this.idEquipamentoDetalhado = idEquipamentoDetalhado;
     }
-    
+
+    public UploadedFile getFiless() {
+        return filess;
+    }
+
+    public void setFiless(UploadedFile filess) {
+        this.filess = filess;
+    }
+
+    public List<File> getArquivos() {
+        return arquivos;
+    }
+
+    public void setArquivos(List<File> arquivos) {
+        this.arquivos = arquivos;
+    }
+
+    public File getFileRemove() {
+        return fileRemove;
+    }
+
+    public void setFileRemove(File fileRemove) {
+        this.fileRemove = fileRemove;
+    }
+
 }

@@ -107,7 +107,7 @@
                                     </p:selectOneMenu>
                                 </h:panelGrid>
                                 <h:panelGrid columns="1">
-                                     <p:spacer width="20" />
+                                    <p:spacer width="20" />
                                     <p:commandButton value="" styleClass="botaoIcones" icon="ui-icon-search" actionListener="#{controleCadEquipamentos.mostrarCliente(controleCadEquipamentos.cadEquipamentos)}" process="@this"/>
                                 </h:panelGrid>
                             </h:panelGrid>
@@ -139,7 +139,7 @@
                     </p:dialog>
                 </h:form>
             </f:view>
-            
+
             <f:view>
                 <h:form id="frmCadEquipDetalhes">
                     <p:dialog header="Detalhe do Equipamento" widgetVar="dlgCadEquipDetalhe" id="dlgCadEquipDetalhe" closable="true" position="350,200">
@@ -205,6 +205,8 @@
                             <f:facet name="header">
                                 <h:outputText value="Ação"/>
                             </f:facet>
+                            <p:commandButton value="" styleClass="botaoIcones" icon="ui-icon-arrowthick-1-s" actionListener="#{controleCadEquipamentos.setarNomeArquivos(itemx)}" process="@this" title="Download" />
+                            <p:commandButton value="" styleClass="botaoIcones" icon="ui-icon-folder-collapsed" actionListener="#{controleCadEquipamentos.setar(itemx)}" process="@this" oncomplete="PF('dlgBackup').show();"  title="Backup" />
                             <p:commandButton value="" styleClass="botaoIcones" icon="ui-icon-search" actionListener="#{controleCadEquipamentos.setar(itemx)}" process="@this" update="frmCadEquipaD" oncomplete="PF('dlgCadEquipaD').show();"  title="Detalhes" />
                             <p:commandButton value="" styleClass="botaoIcones" icon="ui-icon-pencil" actionListener="#{controleCadEquipamentos.setar(itemx)}" process="@this" update="frmCadEquipa" oncomplete="PF('dlgCadEquipa').show();"  title="Editar" />
                             <p:commandButton value="" styleClass="botaoIcones" icon="ui-icon-trash" action="#{controleCadEquipamentos.deletar(itemx)}"  process="@this" title="Excluir" >
@@ -218,7 +220,7 @@
                     </p:dataTable>
                 </h:form>
             </f:view>
-            
+
             <f:view>
                 <h:form id="frmTableEquimentosDetalhes">
                     <p:dialog header="Detalhes do Equipamento" widgetVar="dlgDetalhesEquipamento" id="dlgDetalhesEquipamento" closable="true" position="350,200">
@@ -253,7 +255,7 @@
                     </p:dialog>
                 </h:form>
             </f:view>
-            
+
             <f:view>
                 <h:form id="frmMfabricante">
                     <p:dialog header="Fabricante" widgetVar="dlgMfabricante" id="dlgMfabricante" closable="true">
@@ -379,6 +381,34 @@
             </f:view>
 
             <f:view>
+                <h:form id="formTblArquivo" style="max-width: 60%;">
+                    <p:dialog header="ListaDeArquivo" widgetVar="dlgTblArquivos" id="dlgTblArquivos" closable="true" position="350,200">
+                        <p:dataTable id="tbls" value="#{controleCadEquipamentos.arquivos}" var="file" style="max-width: 950px!important;">
+                            <f:facet name="header">
+                                Arquivos
+                            </f:facet>
+                            <p:column>
+                                <p:commandButton value="Baixar" ajax="false"
+                                                 actionListener="#{descarregadorBean.descarregar(file)}"
+                                                 icon="ui-icon-arrowthick-1-s">
+                                    <p:fileDownload value="#{descarregadorBean.streamedContent}" />
+                                </p:commandButton>
+                                <p:commandButton value="Remover"  styleClass="botao"
+                                             actionListener="#{controleCadEquipamentos.setarFileRemover(file)}"
+                                             icon="ui-icon-trash">
+                            </p:commandButton>
+                            </p:column>
+
+                            <p:column headerText="Nome" filterBy="#{file.name}" filterMatchMode="contains">
+                                <h:outputText value="#{file.name}" />
+                            </p:column>
+                              
+                        </p:dataTable>
+                    </p:dialog>
+                </h:form>
+            </f:view>
+
+            <f:view>
                 <h:form id="frmObsx">
                     <p:dialog widgetVar="dlgObsx" id="dlgObsx" header="Dados da observação" closable="true" position="350, 250">
                         <h:panelGrid columns="1">
@@ -400,7 +430,28 @@
                     </p:dialog>
                 </h:form>
             </f:view>
-
+            <f:view>
+                <h:form id="frmDlgBackup" enctype="multipart/form-data">
+                    <p:dialog widgetVar="dlgBackup" id="dlgBackup" header="Upload Arquivo" closable="true" position="350, 250">
+                        <h:panelGrid columns="1">
+                            <p:fileUpload value="#{controleCadEquipamentos.filess}" mode="simple" skinSimple="true" label="Escolha o Arquivo"/>
+                            <br />
+                            <p:commandButton value="Enviar" ajax="false" action="#{controleCadEquipamentos.upload}" styleClass="p-mt-3 ui-button-outlined p-d-block"/>
+                        </h:panelGrid>
+                    </p:dialog>
+                </h:form>
+            </f:view>
+            
+            <h:form id="formLogConfirma">
+                <p:dialog hideEffect="explode" header="Atenção" widgetVar="dlgRemoverFile">
+                    <br />
+                    <h:outputText value="Proseguir com a remoção?" />
+                    <br />
+                     <br />
+                     <p:commandButton value="OK" icon="ui-icon-trash" iconPos="true" actionListener="#{controleCadEquipamentos.remover()}" style="width: 100px;" process="@this"/>
+                     <p:commandButton value="NÃO" icon="ui-icon-cancel" iconPos="true" onclick="PF('dlgRemoverFile').hide()" style="width: 100px;"  process="@this" />
+                </p:dialog>
+            </h:form>
         </p:panel>
     </ui:define>
 
